@@ -21,8 +21,8 @@
   },
   "scripts": {
     "prepack": "npm run build",
-    "build": "tsc && vite build",
-    "prepare": "husky"
+    "build": "tsc --p ./tsconfig-build.json && vite build",
+    "test": "vitest"
   },
   "homepage": "https://github.com/contentful/vercel-toolkit#readme",
   "devDependencies": {
