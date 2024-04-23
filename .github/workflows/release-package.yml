@@ -11,19 +11,12 @@ env:
   GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
 jobs:
-  build-job:
-    permissions:
-      contents: read
-      id-token: write
-
   release:
     name: Release
     runs-on: ubuntu-latest
     permissions:
-      contents: write # to be able to publish a GitHub release
-      issues: write # to be able to comment on released issues
-      pull-requests: write # to be able to comment on released pull requests
-      id-token: write # to enable use of OIDC for npm provenance
+      contents: read
+      id-token: write
 
     steps:
       - name: Checkout
@@ -31,7 +24,7 @@ jobs:
         with:
           fetch-depth: 0
 
-       - name: "Retrieve NPM Token"
+      - name: 'Retrieve NPM Token'
         id: vault
         uses: hashicorp/vault-action@v2.4.3
         with:
@@ -51,18 +44,15 @@ jobs:
           scope: '@contentful'
           always-auth: true
 
-      - name: "Create NPM .npmrc"
-          shell: bash
-          run: |
-            echo "//npm.pkg.github.com/:_authToken=${GITHUB_PACKAGES_READ_TOKEN}" > ~/.npmrc
-            echo "@contentful:registry=https://npm.pkg.github.com" >> ~/.npmrc
-          env:
-            GITHUB_PACKAGES_READ_TOKEN: ${{ steps.vault.outputs.GITHUB_PACKAGES_READ_TOKEN }}
+      - name: 'Create GH .npmrc'
+        shell: bash
+        run: |
+          echo "//npm.pkg.github.com/:_authToken=${GITHUB_TOKEN}" > ~/.npmrc
+          echo "@contentful:registry=https://npm.pkg.github.com" >> ~/.npmrc
+        env:
+          GITHUB_TOKEN: ${{ steps.vault.outputs.GITHUB_PACKAGES_WRITE_TOKEN }}
 
       - run: npm ci
-        env:
-          GITHUB_TOKEN: ${{ steps.vault.outputs.GITHUB_PACKAGES_READ_TOKEN }}
-
       - run: npm run build
       - run: npm test
 
