@@ -1,0 +1,1 @@
+@contentful/vercel-toolkit
