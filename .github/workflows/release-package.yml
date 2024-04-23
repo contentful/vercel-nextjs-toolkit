@@ -37,7 +37,7 @@ jobs:
           exportEnv: false
           secrets: |
             secret/data/github/github_packages_write GITHUB_PACKAGES_WRITE_TOKEN | GITHUB_PACKAGES_WRITE_TOKEN ;
-            github/token/integration-frontend-toolkit-semantic-release token | GITHUB_TOKEN ;
+            github/token/vercel-toolkit-semantic-release token | GITHUB_TOKEN ;
 
       - name: Setup Node.js
         uses: actions/setup-node@v3
