@@ -11,6 +11,11 @@ env:
   GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
 jobs:
+  build-job:
+    permissions:
+      contents: read
+      id-token: write
+
   release:
     name: Release
     runs-on: ubuntu-latest
@@ -26,7 +31,7 @@ jobs:
         with:
           fetch-depth: 0
 
-      - name: 'Retrieve NPM Token'
+       - name: "Retrieve NPM Token"
         id: vault
         uses: hashicorp/vault-action@v2.4.3
         with:
@@ -36,8 +41,7 @@ jobs:
           path: github-actions
           exportEnv: false
           secrets: |
-            secret/data/github/github_packages_write GITHUB_PACKAGES_WRITE_TOKEN | GITHUB_PACKAGES_WRITE_TOKEN ;
-            github/token/vercel-toolkit-semantic-release token | GITHUB_TOKEN ;
+            secret/data/github/github_packages_read GITHUB_PACKAGES_READ_TOKEN | GITHUB_PACKAGES_READ_TOKEN ;
 
       - name: Setup Node.js
         uses: actions/setup-node@v3
@@ -47,15 +51,18 @@ jobs:
           scope: '@contentful'
           always-auth: true
 
-      - name: 'Create GH .npmrc'
-        shell: bash
-        run: |
-          echo "//npm.pkg.github.com/:_authToken=${GITHUB_TOKEN}" > ~/.npmrc
-          echo "@contentful:registry=https://npm.pkg.github.com" >> ~/.npmrc
-        env:
-          GITHUB_TOKEN: ${{ steps.vault.outputs.GITHUB_PACKAGES_WRITE_TOKEN }}
+      - name: "Create NPM .npmrc"
+          shell: bash
+          run: |
+            echo "//npm.pkg.github.com/:_authToken=${GITHUB_PACKAGES_READ_TOKEN}" > ~/.npmrc
+            echo "@contentful:registry=https://npm.pkg.github.com" >> ~/.npmrc
+          env:
+            GITHUB_PACKAGES_READ_TOKEN: ${{ steps.vault.outputs.GITHUB_PACKAGES_READ_TOKEN }}
 
       - run: npm ci
+        env:
+          GITHUB_TOKEN: ${{ steps.vault.outputs.GITHUB_PACKAGES_READ_TOKEN }}
+
       - run: npm run build
       - run: npm test
 
