@@ -1,6 +1,6 @@
 {
   "name": "@contentful/vercel-toolkit",
-  "version": "0.0.0",
+  "version": "0.0.0-semantic-release",
   "author": "Contentful",
   "license": "MIT",
   "description": "Contentful helper SDK for Vercel platform app integration to enable live preview",
