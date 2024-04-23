@@ -1,6 +1,6 @@
 {
   "name": "@contentful/vercel-toolkit",
-  "version": "0.0.0",
+  "version": "0.0.0-semantic-release",
   "author": "Contentful",
   "license": "MIT",
   "description": "Contentful helper SDK for Vercel platform app integration to enable live preview",
@@ -21,14 +21,24 @@
   },
   "scripts": {
     "prepack": "npm run build",
-    "build": "tsc && vite build",
-    "prepare": "husky"
+    "build": "tsc --p ./tsconfig-build.json && vite build",
+    "test": "vitest"
   },
   "homepage": "https://github.com/contentful/vercel-toolkit#readme",
   "devDependencies": {
     "@types/node": "^20.12.7",
+    "semantic-release": "^23.0.8",
     "typescript": "^5.2.2",
     "vite": "^5.2.0",
     "vite-plugin-dts": "^3.9.0"
+  },
+  "release": {
+    "branches": [
+      "main"
+    ]
+  },
+  "publishConfig": {
+    "registry": "https://npm.pkg.github.com",
+    "access": "public"
   }
 }

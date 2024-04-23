@@ -1,0 +1,11 @@
+apiVersion: backstage.io/v1alpha1
+kind: Component
+metadata:
+  name: vercel-toolkit
+  annotations:
+    github.com/project-slug: contentful/vercel-toolkit
+
+spec:
+  type: library
+  lifecycle: production
+  owner: group:team-integrations
