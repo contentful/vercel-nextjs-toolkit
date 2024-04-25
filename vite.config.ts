@@ -2,6 +2,7 @@
 import { defineConfig } from 'vite';
 import { resolve } from 'path';
 import dts from 'vite-plugin-dts';
+import pkg from './package.json';
 
 // https://vitejs.dev/config/
 export default defineConfig({
@@ -14,7 +15,7 @@ export default defineConfig({
       fileName: 'main',
     },
     rollupOptions: {
-      external: ['next'],
+      external: [...Object.keys(pkg.peerDependencies)],
     },
   },
   plugins: [
