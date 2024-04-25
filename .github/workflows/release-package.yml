@@ -15,8 +15,10 @@ jobs:
     name: Release
     runs-on: ubuntu-latest
     permissions:
-      contents: read
-      id-token: write
+      contents: write # to be able to publish a GitHub release
+      issues: write # to be able to comment on released issues
+      pull-requests: write # to be able to comment on released pull requests
+      id-token: write # to enable use of OIDC for npm provenance
 
     steps:
       - name: Checkout
@@ -54,11 +56,14 @@ jobs:
           GITHUB_PACKAGES_READ_TOKEN: ${{ steps.vault.outputs.GITHUB_PACKAGES_READ_TOKEN }}
 
       - run: npm ci
+        env:
+          GITHUB_PACKAGES_READ_TOKEN: ${{ steps.vault.outputs.GITHUB_PACKAGES_READ_TOKEN }}
+
       - run: npm run build
       - run: npm test
 
       - run: |
           npx semantic-release
         env:
-          GITHUB_PACKAGES_READ_TOKEN: ${{ steps.vault.outputs.GITHUB_PACKAGES_READ_TOKEN }}
-          GITHUB_PACKAGES_WRITE_TOKEN: ${{ steps.vault.outputs.GITHUB_PACKAGES_WRITE_TOKEN }}
+          GITHUB_TOKEN: ${{ steps.vault.outputs.GITHUB_TOKEN }}
+          NPM_TOKEN: ${{ steps.vault.outputs.GITHUB_PACKAGES_WRITE_TOKEN }}
