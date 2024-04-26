@@ -46,7 +46,6 @@
   "homepage": "https://github.com/contentful/vercel-nextjs-toolkit#readme",
   "devDependencies": {
     "@types/node": "^20.12.7",
-    "node-mocks-http": "^1.14.1",
     "semantic-release": "^23.0.8",
     "typescript": "^5.2.2",
     "vite": "^5.2.0",
