@@ -19,7 +19,7 @@ export default defineConfig({
   },
   plugins: [
     dts({
-      include: ['lib'],
+      include: ['lib', 'app-router'],
     }),
   ],
 });
