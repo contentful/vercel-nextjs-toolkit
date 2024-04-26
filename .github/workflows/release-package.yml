@@ -47,11 +47,10 @@ jobs:
           scope: '@contentful'
           always-auth: true
 
-      - name: 'Create NPM .npmrc'
+      - name: "Create GH .npmrc"
         shell: bash
         run: |
-          echo "//npm.pkg.github.com/:_authToken=${GITHUB_TOKEN}" > ~/.npmrc
-          echo "@contentful:registry=https://npm.pkg.github.com" >> ~/.npmrc
+          echo -e "//npm.pkg.github.com/:_authToken=${GITHUB_TOKEN}\n@contentful:registry=https://npm.pkg.github.com\nalways-auth=true" > .npmrc
         env:
           GITHUB_TOKEN: ${{ steps.vault.outputs.GITHUB_PACKAGES_WRITE_TOKEN }}
 
