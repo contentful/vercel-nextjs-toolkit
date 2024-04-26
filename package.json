@@ -1,5 +1,5 @@
 {
-  "name": "@contentful/vercel-toolkit",
+  "name": "@contentful/vercel-nextjs-toolkit",
   "version": "0.0.0-semantic-release",
   "author": "Contentful",
   "license": "MIT",
@@ -14,17 +14,17 @@
   ],
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/contentful/vercel-toolit.git"
+    "url": "git+https://github.com/contentful/vercel-nextjs-toolkit.git"
   },
   "bugs": {
-    "url": "https://github.com/contentful/vercel-toolit/issues"
+    "url": "https://github.com/contentful/vercel-nextjs-toolkit/issues"
   },
   "scripts": {
     "prepack": "npm run build",
     "build": "tsc --p ./tsconfig-build.json && vite build",
     "test": "vitest"
   },
-  "homepage": "https://github.com/contentful/vercel-toolkit#readme",
+  "homepage": "https://github.com/contentful/vercel-nextjs-toolkit#readme",
   "devDependencies": {
     "@types/node": "^20.12.7",
     "semantic-release": "^23.0.8",
