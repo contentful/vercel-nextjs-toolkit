@@ -1,1 +1,1 @@
-export { appRouterHandler } from './handlers';
+export * from './app-router';

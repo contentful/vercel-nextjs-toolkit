@@ -1,7 +1,7 @@
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 import { redirect } from 'next/navigation';
 import { NextRequest } from 'next/server';
-import { appRouterHandler as GET } from './app-router';
+import { enableDraftHandler as GET } from './app-router';
 
 vi.mock('next/navigation', () => {
   return {
