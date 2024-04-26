@@ -14,11 +14,6 @@
     "app-router"
   ],
   "exports": {
-    ".": {
-      "import": "./dist/main.js",
-      "require": "./dist/main.js",
-      "types": "./dist/main.d.ts"
-    },
     "./app-router": {
       "import": "./dist/app-router/index.js",
       "require": "./dist/app-router/index.js",
