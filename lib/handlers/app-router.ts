@@ -5,19 +5,30 @@ import { NextRequest } from 'next/server';
 export async function appRouterHandler(
   request: NextRequest,
 ): Promise<Response | void> {
-  let vercelJwt: VercelJwt;
-  try {
-    vercelJwt = parseVercelJwtCookie(request);
-  } catch (e) {
-    if (!(e instanceof Error)) throw e;
-    return new Response(
-      'Missing or malformed bypass authorization token in _vercel_jwt cookie',
-      { status: 401 },
-    );
-  }
+  const { origin: base, path, host, bypassToken: bypassTokenFromQuery } = parseRequestUrl(request.url);
 
-  const { aud, bypass: bypassToken } = vercelJwt;
-  const { origin: base, path, host } = parseRequestUrl(request.url);
+  let bypassToken: string
+  let aud: string
+
+  if (bypassTokenFromQuery) {
+    bypassToken = bypassTokenFromQuery
+    aud = host
+  } else {
+    // if x-vercel-protection-bypass not provided in query, we defer to parsing the _vercel_jwt cookie
+    // which bundlees the bypass token value in its payload
+    let vercelJwt: VercelJwt;
+    try {
+      vercelJwt = parseVercelJwtCookie(request);
+    } catch (e) {
+      if (!(e instanceof Error)) throw e;
+      return new Response(
+        'Missing or malformed bypass authorization token in _vercel_jwt cookie',
+        { status: 401 },
+      );
+    }
+    bypassToken = vercelJwt.bypass
+    aud = vercelJwt.aud
+  }
 
   if (bypassToken !== process.env.VERCEL_AUTOMATION_BYPASS_SECRET) {
     return new Response(
@@ -41,7 +52,7 @@ export async function appRouterHandler(
 
   draftMode().enable();
 
-  const redirectUrl = buildRedirectUrl({ path, base });
+  const redirectUrl = buildRedirectUrl({ path, base, bypassTokenFromQuery });
   redirect(redirectUrl);
 }
 
@@ -86,26 +97,38 @@ const parseRequestUrl = (
   origin: string;
   host: string;
   path: string;
+  bypassToken: string;
 } => {
   const { searchParams, origin, host } = new URL(requestUrl);
 
   const rawPath = searchParams.get('path') || '';
+  const bypassToken = searchParams.get('x-vercel-protection-bypass') || '';
 
   // to allow query parameters to be passed through to the redirected URL, the original `path` should already be
   // URI encoded, and thus must be decoded here
   const path = decodeURIComponent(rawPath);
 
-  return { origin, path, host };
+  return { origin, path, host, bypassToken };
 };
 
 const buildRedirectUrl = ({
   path,
   base,
+  bypassTokenFromQuery
 }: {
   path: string;
   base: string;
+  bypassTokenFromQuery?: string;
 }): string => {
   const redirectUrl = new URL(path, base);
+
+  // if the bypass token is provided in the query, we assume Vercel has _not_ already set the actual
+  // token that bypasses authentication. thus we provided it here, on the redirect
+  if (bypassTokenFromQuery) {
+    redirectUrl.searchParams.set('x-vercel-protection-bypass', bypassTokenFromQuery)
+    redirectUrl.searchParams.set('x-vercel-set-bypass-cookie', 'samesitenone')
+  }
+
   return redirectUrl.toString();
 };
 

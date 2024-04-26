@@ -33,7 +33,7 @@ describe('handler', () => {
     vi.stubEnv('VERCEL_AUTOMATION_BYPASS_SECRET', bypassToken);
   });
 
-  it('redirects safely to the provided path, passing through the token and bypass cookie query params', async () => {
+  it('redirects safely to the provided path, without passing through the token and bypass cookie query params', async () => {
     const result = await GET(request);
     expect(result).to.be.undefined;
     expect(draftModeMock.enable).toHaveBeenCalled();
@@ -78,6 +78,22 @@ describe('handler', () => {
       const result = await GET(request);
       expect(result).toHaveProperty('status', 401);
     });
+
+    describe('when a x-vercel-protection-bypass token is provided as a query param', () => {
+      beforeEach(() => {
+        const url = `https://vercel-app-router-integrations-ll9uxwb4f.vercel.app/api/enable-draft?path=%2Fblogs%2Fmy-cat&x-vercel-protection-bypass=${bypassToken}`;
+        request = new NextRequest(url);
+      });
+
+      it('redirects safely to the provided path AND passes through the token and bypass cookie query params', async () => {
+        const result = await GET(request);
+        expect(result).to.be.undefined;
+        expect(draftModeMock.enable).toHaveBeenCalled();
+        expect(vi.mocked(redirect)).toHaveBeenCalledWith(
+          `https://vercel-app-router-integrations-ll9uxwb4f.vercel.app/blogs/my-cat?x-vercel-protection-bypass=${bypassToken}&x-vercel-set-bypass-cookie=samesitenone`,
+        );
+      });
+    })
   });
 
   describe('when the bypass token is wrong', () => {
