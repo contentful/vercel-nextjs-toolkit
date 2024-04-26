@@ -11,7 +11,8 @@
   "type": "module",
   "files": [
     "dist",
-    "app-router"
+    "app-router",
+    "pages-router"
   ],
   "exports": {
     ".": {
@@ -23,6 +24,11 @@
       "import": "./dist/app-router/index.js",
       "require": "./dist/app-router/index.js",
       "types": "./dist/app-router/index.d.ts"
+    },
+    "./pages-router": {
+      "import": "./dist/pages-router/index.js",
+      "require": "./dist/pages-router/index.js",
+      "types": "./dist/pages-router/index.d.ts"
     }
   },
   "repository": {
@@ -40,6 +46,7 @@
   "homepage": "https://github.com/contentful/vercel-nextjs-toolkit#readme",
   "devDependencies": {
     "@types/node": "^20.12.7",
+    "node-mocks-http": "^1.14.1",
     "semantic-release": "^23.0.8",
     "typescript": "^5.2.2",
     "vite": "^5.2.0",
