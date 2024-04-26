@@ -2,7 +2,7 @@ import { draftMode } from 'next/headers';
 import { redirect } from 'next/navigation';
 import { NextRequest } from 'next/server';
 
-export async function appRouterHandler(
+export async function enableDraftHandler(
   request: NextRequest,
 ): Promise<Response | void> {
   const { origin: base, path, host, bypassToken: bypassTokenFromQuery } = parseRequestUrl(request.url);

@@ -10,8 +10,16 @@
   "typings": "./dist/main.d.ts",
   "type": "module",
   "files": [
-    "dist"
+    "dist",
+    "app-router"
   ],
+  "exports": {
+    "./app-router": {
+      "import": "./dist/app-router/index.js",
+      "require": "./dist/app-router/index.js",
+      "types": "./dist/app-router/index.d.ts"
+    }
+  },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/contentful/vercel-nextjs-toolkit.git"
