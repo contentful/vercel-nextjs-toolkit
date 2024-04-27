@@ -1,60 +1,143 @@
-import { draftMode } from 'next/headers';
+import { NextApiRequest, NextApiResponse } from 'next';
 import { redirect } from 'next/navigation';
 import { NextRequest } from 'next/server';
+import { isNextApiRequest } from '../helpers/is-next-api-request';
 
-export async function enableDraftHandler(
-  request: NextRequest,
-): Promise<Response | void> {
-  const { origin: base, path, host, bypassToken: bypassTokenFromQuery } = parseRequestUrl(request.url);
+type HandlerRequest = NextApiRequest | NextRequest | Request;
 
-  let bypassToken: string
-  let aud: string
+function enableDraftHandler(draftMode: any) {
+  async function handler<HandlerReq extends NextApiRequest>(
+    req: HandlerReq,
+    res: NextApiResponse,
+  ): Promise<unknown>;
+  async function handler<HandlerReq extends NextRequest | Request>(
+    req: HandlerReq,
+    res?: undefined,
+  ): Promise<Response>;
+  async function handler(req: HandlerRequest, _: NextApiResponse | undefined) {
+    if (isNextApiRequest(req)) {
+      const {
+        origin: base,
+        path,
+        host,
+        bypassToken: bypassTokenFromQuery,
+      } = parseRequestUrl(req.url!);
 
-  if (bypassTokenFromQuery) {
-    bypassToken = bypassTokenFromQuery
-    aud = host
-  } else {
-    // if x-vercel-protection-bypass not provided in query, we defer to parsing the _vercel_jwt cookie
-    // which bundlees the bypass token value in its payload
-    let vercelJwt: VercelJwt;
-    try {
-      vercelJwt = parseVercelJwtCookie(request);
-    } catch (e) {
-      if (!(e instanceof Error)) throw e;
-      return new Response(
-        'Missing or malformed bypass authorization token in _vercel_jwt cookie',
-        { status: 401 },
-      );
+      let bypassToken: string;
+      let aud: string;
+
+      if (bypassTokenFromQuery) {
+        bypassToken = bypassTokenFromQuery;
+        aud = host;
+      } else {
+        // if x-vercel-protection-bypass not provided in query, we defer to parsing the _vercel_jwt cookie
+        // which bundlees the bypass token value in its payload
+        let vercelJwt: VercelJwt;
+        try {
+          vercelJwt = parseVercelJwtCookie(req as unknown as NextRequest);
+        } catch (e) {
+          if (!(e instanceof Error)) throw e;
+          return new Response(
+            'Missing or malformed bypass authorization token in _vercel_jwt cookie',
+            { status: 401 },
+          );
+        }
+        bypassToken = vercelJwt.bypass;
+        aud = vercelJwt.aud;
+      }
+
+      if (bypassToken !== process.env.VERCEL_AUTOMATION_BYPASS_SECRET) {
+        return new Response(
+          'The bypass token you are authorized with does not match the bypass secret for this deployment. You might need to redeploy or go back and try the link again.',
+          { status: 403 },
+        );
+      }
+
+      if (aud !== host) {
+        return new Response(
+          `The bypass token you are authorized with is not valid for this host (${host}). You might need to redeploy or go back and try the link again.`,
+          { status: 403 },
+        );
+      }
+
+      if (!path) {
+        return new Response(
+          'Missing required value for query parameter `path`',
+          {
+            status: 400,
+          },
+        );
+      }
+
+      draftMode().enable();
+
+      const redirectUrl = buildRedirectUrl({
+        path,
+        base,
+        bypassTokenFromQuery,
+      });
+      redirect(redirectUrl);
     }
-    bypassToken = vercelJwt.bypass
-    aud = vercelJwt.aud
   }
 
-  if (bypassToken !== process.env.VERCEL_AUTOMATION_BYPASS_SECRET) {
-    return new Response(
-      'The bypass token you are authorized with does not match the bypass secret for this deployment. You might need to redeploy or go back and try the link again.',
-      { status: 403 },
-    );
-  }
-
-  if (aud !== host) {
-    return new Response(
-      `The bypass token you are authorized with is not valid for this host (${host}). You might need to redeploy or go back and try the link again.`,
-      { status: 403 },
-    );
-  }
-
-  if (!path) {
-    return new Response('Missing required value for query parameter `path`', {
-      status: 400,
-    });
-  }
-
-  draftMode().enable();
-
-  const redirectUrl = buildRedirectUrl({ path, base, bypassTokenFromQuery });
-  redirect(redirectUrl);
+  return handler;
 }
+
+export { enableDraftHandler };
+
+// export async function enableDraftHandler(
+//   request: NextRequest,
+// ): Promise<Response | void> {
+//   const { origin: base, path, host, bypassToken: bypassTokenFromQuery } = parseRequestUrl(request.url);
+
+//   let bypassToken: string
+//   let aud: string
+
+//   if (bypassTokenFromQuery) {
+//     bypassToken = bypassTokenFromQuery
+//     aud = host
+//   } else {
+//     // if x-vercel-protection-bypass not provided in query, we defer to parsing the _vercel_jwt cookie
+//     // which bundlees the bypass token value in its payload
+//     let vercelJwt: VercelJwt;
+//     try {
+//       vercelJwt = parseVercelJwtCookie(request);
+//     } catch (e) {
+//       if (!(e instanceof Error)) throw e;
+//       return new Response(
+//         'Missing or malformed bypass authorization token in _vercel_jwt cookie',
+//         { status: 401 },
+//       );
+//     }
+//     bypassToken = vercelJwt.bypass
+//     aud = vercelJwt.aud
+//   }
+
+//   if (bypassToken !== process.env.VERCEL_AUTOMATION_BYPASS_SECRET) {
+//     return new Response(
+//       'The bypass token you are authorized with does not match the bypass secret for this deployment. You might need to redeploy or go back and try the link again.',
+//       { status: 403 },
+//     );
+//   }
+
+//   if (aud !== host) {
+//     return new Response(
+//       `The bypass token you are authorized with is not valid for this host (${host}). You might need to redeploy or go back and try the link again.`,
+//       { status: 403 },
+//     );
+//   }
+
+//   if (!path) {
+//     return new Response('Missing required value for query parameter `path`', {
+//       status: 400,
+//     });
+//   }
+
+//   draftMode().enable();
+
+//   const redirectUrl = buildRedirectUrl({ path, base, bypassTokenFromQuery });
+//   redirect(redirectUrl);
+// }
 
 interface VercelJwt {
   bypass: string;
@@ -114,7 +197,7 @@ const parseRequestUrl = (
 const buildRedirectUrl = ({
   path,
   base,
-  bypassTokenFromQuery
+  bypassTokenFromQuery,
 }: {
   path: string;
   base: string;
@@ -125,8 +208,11 @@ const buildRedirectUrl = ({
   // if the bypass token is provided in the query, we assume Vercel has _not_ already set the actual
   // token that bypasses authentication. thus we provided it here, on the redirect
   if (bypassTokenFromQuery) {
-    redirectUrl.searchParams.set('x-vercel-protection-bypass', bypassTokenFromQuery)
-    redirectUrl.searchParams.set('x-vercel-set-bypass-cookie', 'samesitenone')
+    redirectUrl.searchParams.set(
+      'x-vercel-protection-bypass',
+      bypassTokenFromQuery,
+    );
+    redirectUrl.searchParams.set('x-vercel-set-bypass-cookie', 'samesitenone');
   }
 
   return redirectUrl.toString();
