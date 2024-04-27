@@ -1,1 +1,1 @@
-export * from './handlers/app-router';
+export * from './handlers';
