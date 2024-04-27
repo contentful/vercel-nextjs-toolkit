@@ -11,8 +11,7 @@
   "type": "module",
   "files": [
     "dist",
-    "app-router",
-    "pages-router"
+    "app-router"
   ],
   "exports": {
     ".": {
@@ -24,11 +23,6 @@
       "import": "./dist/app-router/index.js",
       "require": "./dist/app-router/index.js",
       "types": "./dist/app-router/index.d.ts"
-    },
-    "./pages-router": {
-      "import": "./dist/pages-router/index.js",
-      "require": "./dist/pages-router/index.js",
-      "types": "./dist/pages-router/index.d.ts"
     }
   },
   "repository": {

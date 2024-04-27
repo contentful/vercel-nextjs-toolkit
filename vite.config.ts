@@ -14,7 +14,6 @@ export default defineConfig({
       entry: {
         index: resolve(__dirname, 'lib/main.ts'),
         'app-router': resolve(__dirname, 'lib/app-router/index.ts'),
-        'pages-router': resolve(__dirname, 'lib/pages-router/index.ts'),
       },
       formats: ['es'],
       fileName: 'main',
