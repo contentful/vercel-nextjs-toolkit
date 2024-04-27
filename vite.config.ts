@@ -7,6 +7,7 @@ import pkg from './package.json';
 // https://vitejs.dev/config/
 export default defineConfig({
   build: {
+    sourcemap: true,
     copyPublicDir: false,
     outDir: './dist',
     lib: {
