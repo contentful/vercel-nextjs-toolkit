@@ -13,8 +13,11 @@ function enableDraftHandler(draftMode: any) {
   async function handler<HandlerReq extends NextRequest | Request>(
     req: HandlerReq,
     res?: undefined,
-  ): Promise<Response>;
-  async function handler(req: HandlerRequest, _: NextApiResponse | undefined) {
+  ): Promise<Response | void>;
+  async function handler(
+    req: HandlerRequest,
+    _: NextApiResponse | undefined,
+  ): Promise<Response | void> {
     if (isNextApiRequest(req)) {
       const {
         origin: base,
