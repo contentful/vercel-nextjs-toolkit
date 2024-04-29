@@ -14,6 +14,9 @@
   <a aria-label="License" href="https://github.com/@contentful/vercel-nextjs-toolkit/blob/main/LICENSE">
     <img alt="" src="https://badgen.net/npm/license/@contentful/vercel-nextjs-toolkit">
   </a>
+   <a aria-label="Node.js Package status" href="(https://github.com/contentful/vercel-nextjs-toolkit/actions/workflows/release-package.yml">
+    <img alt="" src="https://github.com/contentful/vercel-nextjs-toolkit/actions/workflows/release-package.yml/badge.svg">
+  </a>
 </p>
 
 
