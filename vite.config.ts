@@ -17,6 +17,8 @@ export default defineConfig({
       formats: ['es'],
       fileName: () => 'main.js',
     },
+    minify: false,
+    ssr: true,
     rollupOptions: {
       external: [...Object.keys(pkg.peerDependencies)],
     },
