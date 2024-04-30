@@ -20,9 +20,9 @@
       "types": "./dist/main.d.ts"
     },
     "./app-router": {
-      "import": "./dist/app-router/index.js",
-      "require": "./dist/app-router/index.js",
-      "types": "./dist/app-router/index.d.ts"
+      "import": "./dist/app-router/handlers/app.js",
+      "require": "./dist/app-router/handlers/app.js",
+      "types": "./dist/app-router/handlers/app.d.ts"
     }
   },
   "repository": {

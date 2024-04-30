@@ -1,7 +1,7 @@
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 import { redirect } from 'next/navigation';
 import { NextRequest } from 'next/server';
-import { enableDraftHandler as GET } from './app-router';
+import { enableDraftHandler as GET } from './app';
 
 vi.mock('next/navigation', () => {
   return {
@@ -93,7 +93,7 @@ describe('handler', () => {
           `https://vercel-app-router-integrations-ll9uxwb4f.vercel.app/blogs/my-cat?x-vercel-protection-bypass=${bypassToken}&x-vercel-set-bypass-cookie=samesitenone`,
         );
       });
-    })
+    });
   });
 
   describe('when the bypass token is wrong', () => {

@@ -12,15 +12,19 @@ export default defineConfig({
     }),
   ],
   build: {
-    lib: {
-      entry: resolve(__dirname, 'lib/main.ts'),
-      formats: ['es'],
-      fileName: () => 'main.js',
-    },
-    minify: false,
     ssr: true,
+    minify: false,
+    lib: {
+      entry: resolve(__dirname, 'lib/index.ts'),
+      formats: ['es'],
+      fileName: () => 'index.js',
+    },
     rollupOptions: {
       external: [...Object.keys(pkg.peerDependencies)],
+      output: {
+        preserveModules: true,
+        preserveModulesRoot: 'lib',
+      },
     },
   },
 });
