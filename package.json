@@ -1,6 +1,6 @@
 {
   "name": "@contentful/vercel-nextjs-toolkit",
-  "version": "1.2.1",
+  "version": "1.2.2",
   "author": "Contentful",
   "license": "MIT",
   "description": "Contentful helper SDK for Vercel platform app integration to enable live preview",
@@ -48,11 +48,6 @@
   },
   "peerDependencies": {
     "next": "^14.2.2"
-  },
-  "release": {
-    "branches": [
-      "main"
-    ]
   },
   "publishConfig": {
     "registry": "https://npm.pkg.github.com",
