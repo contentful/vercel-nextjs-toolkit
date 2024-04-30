@@ -1,6 +1,6 @@
 {
   "name": "@contentful/vercel-nextjs-toolkit",
-  "version": "1.2.2",
+  "version": "1.2.4",
   "author": "Contentful",
   "license": "MIT",
   "description": "Contentful helper SDK for Vercel platform app integration to enable live preview",
@@ -20,9 +20,9 @@
       "types": "./dist/main.d.ts"
     },
     "./app-router": {
-      "import": "./dist/app-router/index.js",
-      "require": "./dist/app-router/index.js",
-      "types": "./dist/app-router/index.d.ts"
+      "import": "./dist/app-router/handlers/app.js",
+      "require": "./dist/app-router/handlers/app.js",
+      "types": "./dist/app-router/handlers/app.d.ts"
     }
   },
   "repository": {

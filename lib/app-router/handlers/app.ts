@@ -5,14 +5,19 @@ import { NextRequest } from 'next/server';
 export async function enableDraftHandler(
   request: NextRequest,
 ): Promise<Response | void> {
-  const { origin: base, path, host, bypassToken: bypassTokenFromQuery } = parseRequestUrl(request.url);
+  const {
+    origin: base,
+    path,
+    host,
+    bypassToken: bypassTokenFromQuery,
+  } = parseRequestUrl(request.url);
 
-  let bypassToken: string
-  let aud: string
+  let bypassToken: string;
+  let aud: string;
 
   if (bypassTokenFromQuery) {
-    bypassToken = bypassTokenFromQuery
-    aud = host
+    bypassToken = bypassTokenFromQuery;
+    aud = host;
   } else {
     // if x-vercel-protection-bypass not provided in query, we defer to parsing the _vercel_jwt cookie
     // which bundlees the bypass token value in its payload
@@ -26,8 +31,8 @@ export async function enableDraftHandler(
         { status: 401 },
       );
     }
-    bypassToken = vercelJwt.bypass
-    aud = vercelJwt.aud
+    bypassToken = vercelJwt.bypass;
+    aud = vercelJwt.aud;
   }
 
   if (bypassToken !== process.env.VERCEL_AUTOMATION_BYPASS_SECRET) {
@@ -114,7 +119,7 @@ const parseRequestUrl = (
 const buildRedirectUrl = ({
   path,
   base,
-  bypassTokenFromQuery
+  bypassTokenFromQuery,
 }: {
   path: string;
   base: string;
@@ -125,8 +130,11 @@ const buildRedirectUrl = ({
   // if the bypass token is provided in the query, we assume Vercel has _not_ already set the actual
   // token that bypasses authentication. thus we provided it here, on the redirect
   if (bypassTokenFromQuery) {
-    redirectUrl.searchParams.set('x-vercel-protection-bypass', bypassTokenFromQuery)
-    redirectUrl.searchParams.set('x-vercel-set-bypass-cookie', 'samesitenone')
+    redirectUrl.searchParams.set(
+      'x-vercel-protection-bypass',
+      bypassTokenFromQuery,
+    );
+    redirectUrl.searchParams.set('x-vercel-set-bypass-cookie', 'samesitenone');
   }
 
   return redirectUrl.toString();
