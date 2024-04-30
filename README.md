@@ -8,8 +8,7 @@
     <img alt="" src="https://badgen.net/npm/v/@contentful/vercel-nextjs-toolkit">
   </a>
   <a aria-label="Package size" href="https://bundlephobia.com/result?p=@contentful/vercel-nextjs-toolkit">
-    <img alt="" src="https://img.shields.io/bundlephobia/min/%40contentful%2Fvercel-nextjs-toolkit
-">
+    <img alt="" src="https://img.shields.io/bundlephobia/min/%40contentful%2Fvercel-nextjs-toolkit">
   </a>
   <a aria-label="License" href="https://github.com/@contentful/vercel-nextjs-toolkit/blob/main/LICENSE">
     <img alt="" src="https://badgen.net/npm/license/@contentful/vercel-nextjs-toolkit">
