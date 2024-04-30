@@ -8,7 +8,7 @@ import pkg from './package.json';
 export default defineConfig({
   plugins: [
     dts({
-      include: ['lib', 'app-router'],
+      include: ['lib'],
     }),
   ],
   build: {
