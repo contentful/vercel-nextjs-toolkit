@@ -50,6 +50,11 @@
   "peerDependencies": {
     "next": "^14.2.2"
   },
+  "release": {
+    "branches": [
+      "main"
+    ]
+  },
   "publishConfig": {
     "registry": "https://npm.pkg.github.com",
     "access": "public"
