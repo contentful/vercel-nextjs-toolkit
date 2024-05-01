@@ -50,41 +50,29 @@ Contentful's Vercel App makes use of these handlers to provide preview URLs that
 #### App Router usage
 
 If your NextJs project is using [App Router](https://nextjs.org/docs/app),
-create a  `route.ts|js`  [route handler](https://nextjs.org/docs/app/building-your-application/routing/route-handlers) file in a dedicated folder (e.g. `api/enable-draft`) inside your `app` directory:
+create a  `route.ts` or `route.js`  [route handler](https://nextjs.org/docs/app/building-your-application/routing/route-handlers) file in a dedicated folder (e.g. `api/enable-draft`) inside your `app` directory:
 
-Typescript example:
 
 ```ts
-// app/api/enable-draft/route.ts
+// app/api/enable-draft/route.ts|js
+
 export { enableDraftHandler as GET } from "@contentful/nextjs-toolkit/app-router"
 ```
 
-Javascript example:
-
-```js
-// app/api/enable-draft/route.js
-export { enableDraftHandler as GET } from "@contentful/nextjs-toolkit/app-router"
-```
 
 #### Pages Router usage
 
-If your NextJs project is using [Pages Router](https://nextjs.org/docs/pages), create an  `enable-draft.ts|js`  [API route](https://nextjs.org/docs/pages/building-your-application/routing/api-routes) file inside the `pages/api` directory.
+If your NextJs project is using [Pages Router](https://nextjs.org/docs/pages), create an  `enable-draft.ts` or `enable-draft.js`  [API route](https://nextjs.org/docs/pages/building-your-application/routing/api-routes) file inside the `pages/api` directory:
 
-Typescript example:
 
 ```ts
-// pages/api/enable-draft.ts
+// pages/api/enable-draft.ts|js
+
 export { enableDraftHandler as handler } from "@contentful/nextjs-toolkit/pages-router";
 ```
 
-Javascript example:
 
-```js
-// pages/api/enable-draft.js
-export { enableDraftHandler as handler } from "@contentful/nextjs-toolkit/pages-router";
-```
-
-#### Preview URL example
+#### Preview URL output
 
 With these handlers installed aboves, you can construct preview URLs that activate Draft Mode and redirect the user to a desired path in your application.
 
