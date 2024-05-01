@@ -12,6 +12,5 @@
       }
     ],
     "@semantic-release/github"
-  ],
-  "debug": true
+  ]
 }
