@@ -76,7 +76,7 @@ const parseVercelJwtCookie = (request: NextRequest): VercelJwt => {
   if (!vercelJwtCookie) throw new Error('Malformed `_vercel_jwt` cookie value');
 
   const base64 = base64Payload.replace('-', '+').replace('_', '/');
-  const payload = asciiBase64Decode(base64);
+  const payload = atob(base64);
   const vercelJwt = JSON.parse(payload);
 
   assertVercelJwt(vercelJwt);
@@ -138,61 +138,4 @@ const buildRedirectUrl = ({
   }
 
   return redirectUrl.toString();
-};
-
-// simplified cross-platform universal base64decode that only supports ascii characters
-// based on https://gist.github.com/Nijikokun/5192472
-const asciiBase64Decode = (input: string): string => {
-  const map =
-    'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/=';
-  const str = input.replace(/[^A-Za-z0-9\+\/\=]/g, '');
-
-  let output = '';
-  let a = 0;
-  let b = 0;
-  let c = 0;
-  let d = 0;
-  let e = 0;
-  let f = 0;
-  let g = 0;
-  let i = 0;
-
-  while (i < str.length) {
-    d = map.indexOf(str.charAt(i++));
-    e = map.indexOf(str.charAt(i++));
-    f = map.indexOf(str.charAt(i++));
-    g = map.indexOf(str.charAt(i++));
-
-    a = (d << 2) | (e >> 4);
-    b = ((e & 15) << 4) | (f >> 2);
-    c = ((f & 3) << 6) | g;
-
-    output += String.fromCharCode(a);
-    if (f != 64) output += String.fromCharCode(b);
-    if (g != 64) output += String.fromCharCode(c);
-  }
-
-  return asciiUtfDecode(output);
-};
-
-// simple cross-platform utf decoder with ascii support only
-const asciiUtfDecode = (str: string): string => {
-  let output = '';
-  let i = 0;
-  let charCode = 0;
-
-  while (i < str.length) {
-    charCode = str.charCodeAt(i);
-
-    if (charCode < 128) {
-      output += String.fromCharCode(charCode);
-      i++;
-    } else {
-      throw new Error(
-        'only ASCII characters supported in base64 encoded payload',
-      );
-    }
-  }
-
-  return output;
 };
