@@ -4,19 +4,20 @@
   "author": "Contentful",
   "license": "MIT",
   "description": "Contentful helper SDK for Vercel platform app integration to enable live preview",
-  "source": "./src/index.ts",
-  "main": "./dist/main.js",
-  "module": "./dist/main.js",
-  "typings": "./dist/main.d.ts",
+  "source": "./lib/index.ts",
+  "main": "./dist/index.js",
+  "module": "./dist/index.js",
+  "typings": "./dist/index.d.ts",
+  "type": "module",
   "files": [
     "dist",
     "app-router"
   ],
   "exports": {
     ".": {
-      "import": "./dist/main.js",
-      "require": "./dist/main.js",
-      "types": "./dist/main.d.ts"
+      "import": "./dist/index.js",
+      "require": "./dist/index.js",
+      "types": "./dist/index.d.ts"
     },
     "./app-router": {
       "import": "./dist/app-router/handlers/app.js",
