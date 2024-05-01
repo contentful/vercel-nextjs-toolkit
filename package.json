@@ -8,7 +8,6 @@
   "main": "./dist/main.js",
   "module": "./dist/main.js",
   "typings": "./dist/main.d.ts",
-  "type": "module",
   "files": [
     "dist",
     "app-router"
@@ -50,11 +49,6 @@
   },
   "peerDependencies": {
     "next": "^14.2.2"
-  },
-  "release": {
-    "branches": [
-      "main"
-    ]
   },
   "publishConfig": {
     "registry": "https://npm.pkg.github.com",
