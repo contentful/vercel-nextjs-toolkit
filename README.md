@@ -56,7 +56,7 @@ create a  `route.ts` or `route.js`  [route handler](https://nextjs.org/docs/app/
 ```ts
 // app/api/enable-draft/route.ts|js
 
-export { enableDraftHandler as GET } from "@contentful/nextjs-toolkit/app-router"
+export { enableDraftHandler as GET } from "@contentful/vercel-nextjs-toolkit/app-router"
 ```
 
 
@@ -68,7 +68,7 @@ If your NextJs project is using [Pages Router](https://nextjs.org/docs/pages), c
 ```ts
 // pages/api/enable-draft.ts|js
 
-export { enableDraftHandler as handler } from "@contentful/nextjs-toolkit/pages-router";
+export { enableDraftHandler as handler } from "@contentful/vercel-nextjs-toolkit/pages-router";
 ```
 
 

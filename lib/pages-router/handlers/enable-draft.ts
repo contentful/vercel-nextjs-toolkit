@@ -3,7 +3,7 @@ import { draftMode } from 'next/headers';
 import { buildRedirectUrl, parseRequestUrl } from '../../utils/url';
 import { parseVercelJwtCookie, type VercelJwt } from '../../utils/vercelJwt';
 
-export const enableDraftApiHandler: NextApiHandler = async (
+export const enableDraftHandler: NextApiHandler = async (
   request: NextApiRequest,
   response: NextApiResponse
 ): Promise<void> => {
