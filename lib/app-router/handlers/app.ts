@@ -12,6 +12,13 @@ export async function enableDraftHandler(
     bypassToken: bypassTokenFromQuery,
   } = parseRequestUrl(request.url);
 
+  // if we're in development, we don't need to check for a bypass token, and we can just enable draft mode
+  if (process.env.NODE_ENV === 'development') {
+    draftMode().enable();
+    const redirectUrl = buildRedirectUrl({ path, base, bypassTokenFromQuery });
+    return redirect(redirectUrl);
+  }
+
   let bypassToken: string;
   let aud: string;
 
