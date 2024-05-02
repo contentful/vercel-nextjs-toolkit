@@ -1,6 +1,6 @@
 import { MockInstance, beforeEach, describe, expect, it, vi } from 'vitest';
 import { NextApiRequest, NextApiResponse } from 'next';
-import { enableDraftHandler as handler } from './enable-draft';
+import { enableDraftApiHandler as handler } from './enable-draft';
 
 vi.mock('next/navigation', () => {
   return {

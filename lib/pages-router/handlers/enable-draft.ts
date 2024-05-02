@@ -1,7 +1,7 @@
 import { NextApiHandler, NextApiRequest, NextApiResponse } from 'next';
 import { draftMode } from 'next/headers';
 
-export const enableDraftHandler: NextApiHandler = async (
+export const enableDraftApiHandler: NextApiHandler = async (
   request: NextApiRequest,
   response: NextApiResponse
 ): Promise<void> => {
