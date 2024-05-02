@@ -52,7 +52,7 @@ describe('createFetch', () => {
       cache: 'force-cache',
     };
 
-    await fetchGraphQL(request.query, request.variables);
+    await fetchGraphQL({ query: request.query, variables: request.variables });
 
     expect(fetch).toHaveBeenCalledWith(graphqlEndpoint, expectedArgs);
   });
@@ -71,7 +71,63 @@ describe('createFetch', () => {
       cache: 'no-store',
     };
 
-    await fetchGraphQL(request.query, request.variables, true);
+    await fetchGraphQL({
+      query: request.query,
+      variables: request.variables,
+      preview: true,
+    });
+
+    expect(fetch).toHaveBeenCalledWith(graphqlEndpoint, expectedArgs);
+  });
+
+  it('should call fetch with correct arguments for tags', async () => {
+    const expectedArgs = {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${accessToken}`,
+      },
+      body: JSON.stringify({
+        query: request.query,
+        variables: request.variables,
+      }),
+      next: {
+        tags: ['post'],
+      },
+      cache: 'force-cache',
+    };
+
+    await fetchGraphQL({
+      query: request.query,
+      variables: request.variables,
+      tags: ['post'],
+    });
+
+    expect(fetch).toHaveBeenCalledWith(graphqlEndpoint, expectedArgs);
+  });
+
+  it('should call fetch with correct arguments for revalidate', async () => {
+    const expectedArgs = {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${accessToken}`,
+      },
+      body: JSON.stringify({
+        query: request.query,
+        variables: request.variables,
+      }),
+      next: {
+        revalidate: 5,
+      },
+      cache: 'force-cache',
+    };
+
+    await fetchGraphQL({
+      query: request.query,
+      variables: request.variables,
+      revalidate: 5,
+    });
 
     expect(fetch).toHaveBeenCalledWith(graphqlEndpoint, expectedArgs);
   });
