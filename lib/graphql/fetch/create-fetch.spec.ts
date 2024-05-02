@@ -39,7 +39,7 @@ describe('createFetch', () => {
   });
 
   it('should call fetch with correct arguments for regular request', async () => {
-    const expectedResponse = {
+    const expectedArgs = {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -54,11 +54,11 @@ describe('createFetch', () => {
 
     await fetchGraphQL(request.query, request.variables);
 
-    expect(fetch).toHaveBeenCalledWith(graphqlEndpoint, expectedResponse);
+    expect(fetch).toHaveBeenCalledWith(graphqlEndpoint, expectedArgs);
   });
 
   it('should call fetch with correct arguments for preview request', async () => {
-    const expectedResponse = {
+    const expectedArgs = {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -73,6 +73,6 @@ describe('createFetch', () => {
 
     await fetchGraphQL(request.query, request.variables, true);
 
-    expect(fetch).toHaveBeenCalledWith(graphqlEndpoint, expectedResponse);
+    expect(fetch).toHaveBeenCalledWith(graphqlEndpoint, expectedArgs);
   });
 });
