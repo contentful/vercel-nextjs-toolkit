@@ -13,18 +13,6 @@
     "dist",
     "app-router"
   ],
-  "exports": {
-    ".": {
-      "import": "./dist/index.js",
-      "require": "./dist/index.js",
-      "types": "./dist/index.d.ts"
-    },
-    "./app-router": {
-      "import": "./dist/app-router/handlers/app.js",
-      "require": "./dist/app-router/handlers/app.js",
-      "types": "./dist/app-router/handlers/app.d.ts"
-    }
-  },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/contentful/vercel-nextjs-toolkit.git"

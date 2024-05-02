@@ -15,9 +15,11 @@ export default defineConfig({
     ssr: true,
     minify: false,
     lib: {
-      entry: resolve(__dirname, 'lib/index.ts'),
-      formats: ['es'],
-      fileName: () => 'index.js',
+      entry: {
+        "app-router": resolve(__dirname, 'lib/app-router/index.ts'),
+        "pages-router": resolve(__dirname, 'lib/pages-router/index.ts'),
+      },
+      formats: ['es']
     },
     rollupOptions: {
       external: [...Object.keys(pkg.peerDependencies)],
