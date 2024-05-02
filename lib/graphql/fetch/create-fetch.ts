@@ -1,13 +1,13 @@
 interface CreateFetchOptions {
   spaceId: string;
   accessToken: string;
-  previewAccessToken: string;
+  previewToken: string;
 }
 
 export function createFetch({
   spaceId,
   accessToken,
-  previewAccessToken,
+  previewToken,
 }: CreateFetchOptions) {
   async function fetchGraphQL(query: string, variables = {}, preview = false) {
     const res = await fetch(
@@ -16,7 +16,7 @@ export function createFetch({
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
-          Authorization: `Bearer ${preview ? previewAccessToken : accessToken}`,
+          Authorization: `Bearer ${preview ? previewToken : accessToken}`,
         },
         body: JSON.stringify({
           query,

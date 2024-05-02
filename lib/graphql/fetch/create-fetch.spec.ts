@@ -6,7 +6,7 @@ global.fetch = vi.fn();
 describe('createFetch', () => {
   const spaceId = 'testSpaceId';
   const accessToken = 'testAccessToken';
-  const previewAccessToken = 'testPreviewAccessToken';
+  const previewToken = 'testPreviewToken';
   const request = {
     query: `#graphql
       {
@@ -34,7 +34,7 @@ describe('createFetch', () => {
     const { fetchGraphQL } = createFetch({
       spaceId,
       accessToken,
-      previewAccessToken,
+      previewToken,
     });
 
     await fetchGraphQL(request.query, request.variables);
@@ -60,7 +60,7 @@ describe('createFetch', () => {
     const { fetchGraphQL } = createFetch({
       spaceId,
       accessToken,
-      previewAccessToken,
+      previewToken,
     });
 
     await fetchGraphQL(request.query, request.variables, true);
@@ -71,7 +71,7 @@ describe('createFetch', () => {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
-          Authorization: `Bearer ${previewAccessToken}`,
+          Authorization: `Bearer ${previewToken}`,
         },
         body: JSON.stringify({
           query: request.query,
