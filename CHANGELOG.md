@@ -1,3 +1,10 @@
+## [1.2.16](https://github.com/contentful/vercel-nextjs-toolkit/compare/v1.2.15...v1.2.16) (2024-05-02)
+
+
+### Bug Fixes
+
+* disable JWT check if NODE_ENV equals development. ([317f62f](https://github.com/contentful/vercel-nextjs-toolkit/commit/317f62f07c60696a04f541b7e61ef22d9e962f22))
+
 ## [1.2.15](https://github.com/contentful/vercel-nextjs-toolkit/compare/v1.2.14...v1.2.15) (2024-05-01)
 
 
