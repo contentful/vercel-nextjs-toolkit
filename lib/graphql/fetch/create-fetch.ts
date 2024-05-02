@@ -18,30 +18,28 @@ export function createFetch({
   previewToken,
 }: CreateFetchOptions) {
   async function fetchGraphQL(options: FetchGragphQLOptions) {
+    const { query, variables, preview, tags, revalidate } = options;
+
     const res = await fetch(
       `https://graphql.contentful.com/content/v1/spaces/${spaceId}`,
       {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
-          Authorization: `Bearer ${
-            options.preview ? previewToken : accessToken
-          }`,
+          Authorization: `Bearer ${preview ? previewToken : accessToken}`,
         },
         body: JSON.stringify({
-          query: options.query,
-          variables: options.variables,
+          query,
+          variables,
         }),
-        ...(options.tags || options.revalidate
+        ...(tags || revalidate
           ? {
               next: {
-                ...(options.tags
-                  ? { tags: options.tags }
-                  : { revalidate: options.revalidate }),
+                ...(tags ? { tags } : { revalidate }),
               },
             }
           : {}),
-        cache: options.preview ? 'no-store' : 'force-cache',
+        cache: preview ? 'no-store' : 'force-cache',
       } as RequestInit,
     );
 
