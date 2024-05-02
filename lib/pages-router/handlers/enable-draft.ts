@@ -12,6 +12,14 @@ export const enableDraftApiHandler: NextApiHandler = async (
     bypassToken: bypassTokenFromQuery,
   } = parseRequestUrl(request.url);
 
+  // if we're in development, we don't need to check for a bypass token, and we can just enable draft mode
+  if (process.env.NODE_ENV === 'development') {
+    draftMode().enable();
+    const redirectUrl = buildRedirectUrl({ path, base, bypassTokenFromQuery });
+    response.redirect(redirectUrl)
+    return
+  }
+
   let bypassToken: string;
   let aud: string;
 
