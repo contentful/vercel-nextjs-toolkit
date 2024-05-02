@@ -25,6 +25,7 @@ jobs:
         uses: actions/checkout@v3
         with:
           fetch-depth: 0
+          persist-credentials: false
 
       - name: 'Retrieve NPM Token'
         id: vault
@@ -47,7 +48,7 @@ jobs:
           scope: '@contentful'
           always-auth: true
 
-      - name: "Create GH .npmrc"
+      - name: 'Create GH .npmrc'
         shell: bash
         run: |
           echo -e "//npm.pkg.github.com/:_authToken=${GITHUB_TOKEN}\n@contentful:registry=https://npm.pkg.github.com\nalways-auth=true" > .npmrc
