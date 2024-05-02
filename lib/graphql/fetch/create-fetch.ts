@@ -12,12 +12,12 @@ interface FetchGragphQLOptions {
   revalidate?: number;
 }
 
-export function createFetch({
+export function experimentalCreateFetch({
   spaceId,
   accessToken,
   previewToken,
 }: CreateFetchOptions) {
-  async function fetchGraphQL(options: FetchGragphQLOptions) {
+  async function experimentalFetchGraphQL(options: FetchGragphQLOptions) {
     const { query, variables, preview, tags, revalidate } = options;
 
     const res = await fetch(
@@ -48,5 +48,5 @@ export function createFetch({
     return data;
   }
 
-  return { fetchGraphQL };
+  return { experimentalFetchGraphQL };
 }
