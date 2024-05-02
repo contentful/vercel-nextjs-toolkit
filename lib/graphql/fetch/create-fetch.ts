@@ -4,18 +4,20 @@ interface CreateFetchOptions {
   previewToken: string;
 }
 
+interface FetchGragphQLOptions {
+  query: string;
+  variables: { [key: string]: string };
+  preview?: boolean;
+  tags?: Array<string>;
+  revalidate?: number;
+}
+
 export function createFetch({
   spaceId,
   accessToken,
   previewToken,
 }: CreateFetchOptions) {
-  async function fetchGraphQL(options: {
-    query: string;
-    variables: { [key: string]: string };
-    preview?: boolean;
-    tags?: Array<string>;
-    revalidate?: number;
-  }) {
+  async function fetchGraphQL(options: FetchGragphQLOptions) {
     const res = await fetch(
       `https://graphql.contentful.com/content/v1/spaces/${spaceId}`,
       {
