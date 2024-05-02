@@ -22,6 +22,11 @@
       "import": "./dist/pages-router.js",
       "require": "./dist/pages-router.cjs",
       "types": "./dist/pages-router/index.d.ts"
+    },
+    "./graphql": {
+      "import": "./dist/create-fetch.js",
+      "require": "./dist/create-fetch.cjs",
+      "types": "./dist/graphql/index.d.ts"
     }
   },
   "repository": {
