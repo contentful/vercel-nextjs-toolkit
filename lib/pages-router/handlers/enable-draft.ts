@@ -1,5 +1,7 @@
 import { NextApiHandler, NextApiRequest, NextApiResponse } from 'next';
 import { draftMode } from 'next/headers';
+import { buildRedirectUrl, parseRequestUrl } from '../../utils/url';
+import { parseVercelJwtCookie, type VercelJwt } from '../../utils/vercelJwt';
 
 export const enableDraftApiHandler: NextApiHandler = async (
   request: NextApiRequest,
@@ -31,7 +33,9 @@ export const enableDraftApiHandler: NextApiHandler = async (
     // which bundlees the bypass token value in its payload
     let vercelJwt: VercelJwt;
     try {
-      vercelJwt = parseVercelJwtCookie(request);
+      const vercelJwtCookie = request.cookies['_vercel_jwt']
+      if (!vercelJwtCookie) throw new Error('`_vercel_jwt` cookie not set');
+      vercelJwt = parseVercelJwtCookie(vercelJwtCookie);
     } catch (e) {
       if (!(e instanceof Error)) throw e;
       response.status(401).send(
@@ -70,83 +74,3 @@ export const enableDraftApiHandler: NextApiHandler = async (
   response.redirect(redirectUrl)
   return
 }
-
-interface VercelJwt {
-  bypass: string;
-  aud: string;
-  iat: number;
-  sub: string;
-}
-
-const parseVercelJwtCookie = (request: NextApiRequest): VercelJwt => {
-  const vercelJwtCookie = request.cookies['_vercel_jwt']
-  if (!vercelJwtCookie) throw new Error('`_vercel_jwt` cookie not set');
-
-  const base64Payload = vercelJwtCookie.split('.')[1];
-  if (!vercelJwtCookie) throw new Error('Malformed `_vercel_jwt` cookie value');
-
-  const base64 = base64Payload.replace('-', '+').replace('_', '/');
-  const payload = atob(base64);
-  const vercelJwt = JSON.parse(payload);
-
-  assertVercelJwt(vercelJwt);
-
-  return vercelJwt;
-};
-
-function assertVercelJwt(value: object): asserts value is VercelJwt {
-  const vercelJwt = value as VercelJwt;
-  if (typeof vercelJwt.bypass !== 'string')
-    throw new TypeError("'bypass' property in VercelJwt is not a string");
-  if (typeof vercelJwt.aud !== 'string')
-    throw new TypeError("'aud' property in VercelJwt is not a string");
-  if (typeof vercelJwt.sub !== 'string')
-    throw new TypeError("'sub' property in VercelJwt is not a string");
-  if (typeof vercelJwt.iat !== 'number')
-    throw new TypeError("'iat' property in VercelJwt is not a number");
-}
-
-const parseRequestUrl = (
-  requestUrl: string | undefined,
-): {
-  origin: string;
-  host: string;
-  path: string;
-  bypassToken: string;
-} => {
-  if (!requestUrl) throw new Error('missing `url` value in request')
-  const { searchParams, origin, host } = new URL(requestUrl);
-
-  const rawPath = searchParams.get('path') || '';
-  const bypassToken = searchParams.get('x-vercel-protection-bypass') || '';
-
-  // to allow query parameters to be passed through to the redirected URL, the original `path` should already be
-  // URI encoded, and thus must be decoded here
-  const path = decodeURIComponent(rawPath);
-
-  return { origin, path, host, bypassToken };
-};
-
-const buildRedirectUrl = ({
-  path,
-  base,
-  bypassTokenFromQuery,
-}: {
-  path: string;
-  base: string;
-  bypassTokenFromQuery?: string;
-}): string => {
-  const redirectUrl = new URL(path, base);
-
-  // if the bypass token is provided in the query, we assume Vercel has _not_ already set the actual
-  // token that bypasses authentication. thus we provided it here, on the redirect
-  if (bypassTokenFromQuery) {
-    redirectUrl.searchParams.set(
-      'x-vercel-protection-bypass',
-      bypassTokenFromQuery,
-    );
-    redirectUrl.searchParams.set('x-vercel-set-bypass-cookie', 'samesitenone');
-  }
-
-  return redirectUrl.toString();
-};
