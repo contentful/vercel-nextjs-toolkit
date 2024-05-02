@@ -13,7 +13,6 @@ export default defineConfig({
   ],
   build: {
     ssr: true,
-    minify: false,
     lib: {
       entry: {
         'app-router': resolve(__dirname, 'lib/app-router/index.ts'),
@@ -25,7 +24,6 @@ export default defineConfig({
       external: [...Object.keys(pkg.peerDependencies)],
       output: {
         preserveModules: true,
-        preserveModulesRoot: 'lib',
       },
     },
   },
