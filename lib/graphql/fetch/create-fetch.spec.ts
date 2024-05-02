@@ -52,7 +52,10 @@ describe('createFetch', () => {
       cache: 'force-cache',
     };
 
-    await fetchGraphQL({ query: request.query, variables: request.variables });
+    await fetchGraphQL({
+      query: request.query,
+      variables: request.variables,
+    });
 
     expect(fetch).toHaveBeenCalledWith(graphqlEndpoint, expectedArgs);
   });

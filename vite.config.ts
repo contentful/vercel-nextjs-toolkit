@@ -6,18 +6,20 @@ import pkg from './package.json';
 
 // https://vitejs.dev/config/
 export default defineConfig({
-  plugins: [dts({
-    exclude: ["lib/**/*.spec.ts", "test"],
-  })],
+  plugins: [
+    dts({
+      exclude: ['lib/**/*.spec.ts', 'test'],
+    }),
+  ],
   build: {
     ssr: true,
     minify: false,
     lib: {
       entry: {
-        "app-router": resolve(__dirname, 'lib/app-router/index.ts'),
-        "pages-router": resolve(__dirname, 'lib/pages-router/index.ts'),
+        'app-router': resolve(__dirname, 'lib/app-router/index.ts'),
+        'pages-router': resolve(__dirname, 'lib/pages-router/index.ts'),
       },
-      formats: ['es', 'cjs']
+      formats: ['es', 'cjs'],
     },
     rollupOptions: {
       external: [...Object.keys(pkg.peerDependencies)],

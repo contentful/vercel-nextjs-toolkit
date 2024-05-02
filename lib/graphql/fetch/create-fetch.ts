@@ -6,18 +6,20 @@ interface CreateFetchOptions {
 
 interface FetchGragphQLOptions {
   query: string;
-  variables: { [key: string]: string };
+  variables: {
+    [key: string]: string | object | boolean | number | undefined;
+  };
   preview?: boolean;
   tags?: Array<string>;
   revalidate?: number;
 }
 
-export function experimentalCreateFetch({
+export function createFetch({
   spaceId,
   accessToken,
   previewToken,
 }: CreateFetchOptions) {
-  async function experimentalFetchGraphQL(options: FetchGragphQLOptions) {
+  async function fetchGraphQL(options: FetchGragphQLOptions) {
     const { query, variables, preview, tags, revalidate } = options;
 
     const res = await fetch(
@@ -48,5 +50,5 @@ export function experimentalCreateFetch({
     return data;
   }
 
-  return { experimentalFetchGraphQL };
+  return { fetchGraphQL };
 }
