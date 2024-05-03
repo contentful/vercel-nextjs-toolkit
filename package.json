@@ -9,10 +9,7 @@
   "module": "./dist/index.js",
   "typings": "./dist/index.d.ts",
   "type": "module",
-  "files": [
-    "dist",
-    "app-router"
-  ],
+  "files": [ "dist" ],
   "repository": {
     "type": "git",
     "url": "git+https://github.com/contentful/vercel-nextjs-toolkit.git"
