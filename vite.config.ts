@@ -17,6 +17,7 @@ export default defineConfig({
       entry: {
         'app-router': resolve(__dirname, 'lib/app-router/index.ts'),
         'pages-router': resolve(__dirname, 'lib/pages-router/index.ts'),
+        graphql: resolve(__dirname, 'lib/graphql/index.ts'),
       },
       formats: ['es', 'cjs'],
     },
