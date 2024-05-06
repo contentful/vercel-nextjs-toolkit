@@ -7,7 +7,7 @@ import pkg from './package.json';
 // https://vitejs.dev/config/
 export default defineConfig({
   plugins: [dts({
-    exclude: ["lib/**/*.spec.ts"],
+    exclude: ["lib/**/*.spec.ts", "test"],
   })],
   build: {
     ssr: true,

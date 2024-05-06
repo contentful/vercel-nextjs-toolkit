@@ -1,6 +1,7 @@
 import { MockInstance, beforeEach, describe, expect, it, vi } from 'vitest';
 import { NextApiRequest, NextApiResponse } from 'next';
 import { enableDraftHandler as handler } from './enable-draft';
+import { makeNextApiRequest } from '../../../test/helpers';
 
 vi.mock('next/navigation', () => {
   return {
@@ -17,22 +18,6 @@ vi.mock('next/headers', () => {
 const draftModeMock = {
   enable: vi.fn(),
 };
-
-const makeNextApiRequest = (url: string): NextApiRequest => {
-  // need to recreate a realistic NextApiRequest which includes the values
-  // we'll use when parsing the URL in production code
-  const { protocol, host } = new URL(url)
-  const path = '/' + url.split('/').slice(3).join('/')
-  const request = {
-    url: path,
-    cookies: {},
-    headers: {
-      host,
-      'x-forwarded-proto': protocol.slice(0, -1)
-    }
-  } as unknown as NextApiRequest
-  return request
-}
 
 const makeNextApiResponse = (): NextApiResponse => (nextApiResponseMock as NextApiResponse)
 

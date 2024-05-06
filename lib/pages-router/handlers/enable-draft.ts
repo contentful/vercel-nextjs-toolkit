@@ -1,7 +1,8 @@
 import { NextApiHandler, NextApiRequest, NextApiResponse } from 'next';
 import { draftMode } from 'next/headers';
 import { buildRedirectUrl, parseNextApiRequest } from '../../utils/url';
-import { parseVercelJwtCookie, type VercelJwt } from '../../utils/vercelJwt';
+import { parseVercelJwtCookie} from '../../utils/vercelJwt';
+import { type VercelJwt } from '../../types';
 
 export const enableDraftHandler: NextApiHandler = async (
   request: NextApiRequest,

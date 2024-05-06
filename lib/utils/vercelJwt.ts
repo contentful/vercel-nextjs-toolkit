@@ -1,11 +1,5 @@
 import { NextRequest } from "next/server";
-
-export interface VercelJwt {
-  bypass: string;
-  aud: string;
-  iat: number;
-  sub: string;
-}
+import { type VercelJwt } from "../types";
 
 export const getVercelJwtCookie = (request: NextRequest): string => {
   const vercelJwtCookie = request.cookies.get('_vercel_jwt');

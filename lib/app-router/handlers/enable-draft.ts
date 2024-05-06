@@ -2,7 +2,8 @@ import { draftMode } from 'next/headers';
 import { redirect } from 'next/navigation';
 import { NextRequest } from 'next/server';
 import { buildRedirectUrl, parseRequestUrl } from '../../utils/url';
-import { getVercelJwtCookie, parseVercelJwtCookie, type VercelJwt } from '../../utils/vercelJwt';
+import { getVercelJwtCookie, parseVercelJwtCookie } from '../../utils/vercelJwt';
+import { type VercelJwt } from '../../types';
 
 export async function enableDraftHandler(
   request: NextRequest,
@@ -30,7 +31,7 @@ export async function enableDraftHandler(
   } else {
     // if x-vercel-protection-bypass not provided in query, we defer to parsing the _vercel_jwt cookie
     // which bundlees the bypass token value in its payload
-    let vercelJwt: VercelJwt;
+    let vercelJwt: VercelJwt
     try {
       const vercelJwtCookie = getVercelJwtCookie(request)
       vercelJwt = parseVercelJwtCookie(vercelJwtCookie);
