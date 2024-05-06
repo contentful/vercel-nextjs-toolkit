@@ -1,6 +1,6 @@
 import { NextApiHandler, NextApiRequest, NextApiResponse } from 'next';
 import { draftMode } from 'next/headers';
-import { buildRedirectUrl, parseRequestUrl } from '../../utils/url';
+import { buildRedirectUrl, parseNextApiRequest } from '../../utils/url';
 import { parseVercelJwtCookie, type VercelJwt } from '../../utils/vercelJwt';
 
 export const enableDraftHandler: NextApiHandler = async (
@@ -12,7 +12,7 @@ export const enableDraftHandler: NextApiHandler = async (
     path,
     host,
     bypassToken: bypassTokenFromQuery,
-  } = parseRequestUrl(request.url);
+  } = parseNextApiRequest(request);
 
   // if we're in development, we don't need to check for a bypass token, and we can just enable draft mode
   if (process.env.NODE_ENV === 'development') {

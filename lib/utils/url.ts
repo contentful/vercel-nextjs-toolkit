@@ -1,11 +1,28 @@
-export const parseRequestUrl = (
-  requestUrl: string | undefined,
-): {
+import { NextApiRequest } from "next";
+
+interface ParsedRequestUrl {
   origin: string;
   host: string;
   path: string;
   bypassToken: string;
-} => {
+}
+
+export const parseNextApiRequest = (
+  request: NextApiRequest
+): ParsedRequestUrl => {
+  const hostHeader = request.headers.host
+  if (!hostHeader) throw new Error('missing `host` header from request')
+
+  const protocol = request.headers['x-forwarded-proto'] || 'https'
+  const requestUrl = request.url && new URL(request.url, `${protocol}://${hostHeader}`).toString()
+
+  const { origin, path, host, bypassToken } = parseRequestUrl(requestUrl)
+  return { origin, path, host, bypassToken };
+}
+
+export const parseRequestUrl = (
+  requestUrl: string | undefined,
+): ParsedRequestUrl => {
   if (!requestUrl) throw new Error('missing `url` value in request')
   const { searchParams, origin, host } = new URL(requestUrl);
 
