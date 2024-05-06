@@ -25,6 +25,7 @@ export default defineConfig({
       external: [...Object.keys(pkg.peerDependencies)],
       output: {
         preserveModules: true,
+        preserveModulesRoot: 'lib',
       },
     },
   },
