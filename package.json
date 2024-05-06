@@ -13,12 +13,12 @@
   "exports": {
     "./app-router": {
       "import": "./dist/app-router.js",
-      "require": "./dist/app-router.js",
+      "require": "./dist/app-router.cjs",
       "types": "./dist/app-router/index.d.ts"
     },
     "./pages-router": {
       "import": "./dist/pages-router.js",
-      "require": "./dist/pages-router.js",
+      "require": "./dist/pages-router.cjs",
       "types": "./dist/pages-router/index.d.ts"
     }
   },
