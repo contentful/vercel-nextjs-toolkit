@@ -9,20 +9,17 @@
   "module": "./dist/index.js",
   "typings": "./dist/index.d.ts",
   "type": "module",
-  "files": [
-    "dist",
-    "app-router"
-  ],
+  "files": [ "dist" ],
   "exports": {
-    ".": {
-      "import": "./dist/index.js",
-      "require": "./dist/index.js",
-      "types": "./dist/index.d.ts"
-    },
     "./app-router": {
-      "import": "./dist/app-router/handlers/app.js",
-      "require": "./dist/app-router/handlers/app.js",
-      "types": "./dist/app-router/handlers/app.d.ts"
+      "import": "./dist/app-router.js",
+      "require": "./dist/app-router.cjs",
+      "types": "./dist/app-router/index.d.ts"
+    },
+    "./pages-router": {
+      "import": "./dist/pages-router.js",
+      "require": "./dist/pages-router.cjs",
+      "types": "./dist/pages-router/index.d.ts"
     }
   },
   "repository": {
@@ -34,7 +31,7 @@
   },
   "scripts": {
     "prepack": "npm run build",
-    "build": "tsc --p ./tsconfig-build.json && vite build",
+    "build": "tsc && vite build",
     "test": "vitest"
   },
   "homepage": "https://github.com/contentful/vercel-nextjs-toolkit#readme",
