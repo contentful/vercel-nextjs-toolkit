@@ -9,28 +9,20 @@ vi.mock('next/navigation', () => {
   };
 });
 
-vi.mock('next/headers', () => {
-  return {
-    draftMode: vi.fn(() => draftModeMock),
-  };
-});
-
-const draftModeMock = {
-  enable: vi.fn(),
-};
-
 const makeNextApiResponse = (): NextApiResponse => (nextApiResponseMock as NextApiResponse)
 
 const nextApiResponseMock: Partial<NextApiResponse> = {
   status(_code: number) { return this as NextApiResponse },
   send(_bodyString: string) { },
-  redirect(_statusCode: number | string, _url?: string) { return this as NextApiResponse }
+  redirect(_statusCode: number | string, _url?: string) { return this as NextApiResponse },
+  setDraftMode() { return this as NextApiResponse },
 }
 
 interface ApiResponseSpy {
   status: MockInstance
   send: MockInstance
   redirect: MockInstance
+  setDraftMode: MockInstance
 }
 
 
@@ -50,7 +42,8 @@ describe('handler', () => {
     apiResponseSpy = {
       redirect: vi.spyOn(nextApiResponseMock, 'redirect'),
       status: vi.spyOn(nextApiResponseMock, 'status'),
-      send: vi.spyOn(nextApiResponseMock, 'send')
+      send: vi.spyOn(nextApiResponseMock, 'send'),
+      setDraftMode: vi.spyOn(nextApiResponseMock, 'setDraftMode')
     }
     vi.stubEnv('VERCEL_AUTOMATION_BYPASS_SECRET', bypassToken);
   });
@@ -58,7 +51,7 @@ describe('handler', () => {
   it('redirects safely to the provided path, without passing through the token and bypass cookie query params', async () => {
     const result = await handler(request, response);
     expect(result).to.be.undefined;
-    expect(draftModeMock.enable).toHaveBeenCalled();
+    expect(apiResponseSpy.setDraftMode).toHaveBeenCalledWith({ enable: true });
     expect(apiResponseSpy.redirect).toHaveBeenCalledWith(
       'https://vercel-app-router-integrations-ll9uxwb4f.vercel.app/blogs/my-cat',
     );
@@ -113,7 +106,7 @@ describe('handler', () => {
       it('redirects safely to the provided path AND passes through the token and bypass cookie query params', async () => {
         const result = await handler(request, response);
         expect(result).to.be.undefined;
-        expect(draftModeMock.enable).toHaveBeenCalled();
+        expect(apiResponseSpy.setDraftMode).toHaveBeenCalledWith({ enable: true });
         expect(apiResponseSpy.redirect).toHaveBeenCalledWith(
           `https://vercel-app-router-integrations-ll9uxwb4f.vercel.app/blogs/my-cat?x-vercel-protection-bypass=${bypassToken}&x-vercel-set-bypass-cookie=samesitenone`,
         );

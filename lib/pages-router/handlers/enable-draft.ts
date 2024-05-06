@@ -1,5 +1,4 @@
 import { NextApiHandler, NextApiRequest, NextApiResponse } from 'next';
-import { draftMode } from 'next/headers';
 import { buildRedirectUrl, parseNextApiRequest } from '../../utils/url';
 import { parseVercelJwtCookie} from '../../utils/vercelJwt';
 import { type VercelJwt } from '../../types';
@@ -17,7 +16,7 @@ export const enableDraftHandler: NextApiHandler = async (
 
   // if we're in development, we don't need to check for a bypass token, and we can just enable draft mode
   if (process.env.NODE_ENV === 'development') {
-    draftMode().enable();
+    response.setDraftMode({ enable: true })
     const redirectUrl = buildRedirectUrl({ path, base, bypassTokenFromQuery });
     response.redirect(redirectUrl)
     return
@@ -69,7 +68,7 @@ export const enableDraftHandler: NextApiHandler = async (
     return
   }
 
-  draftMode().enable();
+  response.setDraftMode({ enable: true })
 
   const redirectUrl = buildRedirectUrl({ path, base, bypassTokenFromQuery });
   response.redirect(redirectUrl)
