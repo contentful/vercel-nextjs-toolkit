@@ -31,7 +31,7 @@
   },
   "scripts": {
     "prepack": "npm run build",
-    "build": "tsc --p ./tsconfig-build.json && vite build",
+    "build": "tsc && vite build",
     "test": "vitest"
   },
   "homepage": "https://github.com/contentful/vercel-nextjs-toolkit#readme",
