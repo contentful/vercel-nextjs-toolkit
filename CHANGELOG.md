@@ -1,3 +1,10 @@
+# [1.3.0](https://github.com/contentful/vercel-nextjs-toolkit/compare/v1.2.16...v1.3.0) (2024-05-06)
+
+
+### Features
+
+* add pages-router enable draft implementation ([6749496](https://github.com/contentful/vercel-nextjs-toolkit/commit/6749496d381fb61d3e352ec6a83d315cf677fc79))
+
 ## [1.2.16](https://github.com/contentful/vercel-nextjs-toolkit/compare/v1.2.15...v1.2.16) (2024-05-02)
 
 
