@@ -4,7 +4,6 @@
   "author": "Contentful",
   "license": "MIT",
   "description": "Contentful helper SDK for Vercel platform app integration to enable live preview",
-  "typings": "./dist/index.d.ts",
   "type": "module",
   "files": [
     "dist"
