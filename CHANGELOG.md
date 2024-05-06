@@ -1,3 +1,10 @@
+## [1.3.1](https://github.com/contentful/vercel-nextjs-toolkit/compare/v1.3.0...v1.3.1) (2024-05-06)
+
+
+### Bug Fixes
+
+* trigger release ([ec17bb2](https://github.com/contentful/vercel-nextjs-toolkit/commit/ec17bb2c488b956f00788256559f6be93091247a))
+
 # [1.3.0](https://github.com/contentful/vercel-nextjs-toolkit/compare/v1.2.16...v1.3.0) (2024-05-06)
 
 
