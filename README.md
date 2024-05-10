@@ -1,6 +1,3 @@
-> [!WARNING]  
-> This toolkit is currently under active development. Use with caution until this warning is removed.
-
 # Vercel Next.js Toolkit for Contentful
 
 <p>
