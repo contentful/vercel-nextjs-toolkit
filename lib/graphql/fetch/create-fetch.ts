@@ -1,3 +1,5 @@
+import { draftMode } from 'next/headers';
+
 interface CreateFetchOptions {
   spaceId: string;
   accessToken: string;
@@ -9,7 +11,6 @@ interface FetchGragphQLOptions {
   variables: {
     [key: string]: string | object | boolean | number | undefined;
   };
-  preview?: boolean;
   tags?: Array<string>;
   revalidate?: number;
 }
@@ -20,7 +21,8 @@ export function createFetch({
   previewToken,
 }: CreateFetchOptions) {
   async function fetchGraphQL(options: FetchGragphQLOptions) {
-    const { query, variables, preview, tags, revalidate } = options;
+    const { isEnabled } = draftMode();
+    const { query, variables, tags, revalidate } = options;
 
     const res = await fetch(
       `https://graphql.contentful.com/content/v1/spaces/${spaceId}`,
@@ -28,7 +30,7 @@ export function createFetch({
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
-          Authorization: `Bearer ${preview ? previewToken : accessToken}`,
+          Authorization: `Bearer ${isEnabled ? previewToken : accessToken}`,
         },
         body: JSON.stringify({
           query,
@@ -41,7 +43,7 @@ export function createFetch({
               },
             }
           : {}),
-        cache: preview ? 'no-store' : 'force-cache',
+        cache: isEnabled ? 'no-store' : 'force-cache',
       } as RequestInit,
     );
 
