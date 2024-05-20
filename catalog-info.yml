@@ -1,11 +1,11 @@
 apiVersion: backstage.io/v1alpha1
 kind: Component
 metadata:
-  name: vercel-toolkit
+  name: vercel-nextjs-toolkit
   annotations:
-    github.com/project-slug: contentful/vercel-toolkit
+    github.com/project-slug: contentful/vercel-nextjs-toolkit
 
 spec:
   type: library
   lifecycle: production
-  owner: group:team-integrations
+  owner: group:team-developer-experience
