@@ -6,7 +6,7 @@ interface CreateFetchOptions {
   previewToken: string;
 }
 
-interface FetchGragphQLOptions {
+interface FetchGraphQLOptions {
   query: string;
   variables: {
     [key: string]: string | object | boolean | number | undefined;
@@ -20,7 +20,7 @@ export function createFetch({
   accessToken,
   previewToken,
 }: CreateFetchOptions) {
-  async function fetchGraphQL(options: FetchGragphQLOptions) {
+  async function fetchGraphQL(options: FetchGraphQLOptions) {
     const { isEnabled } = draftMode();
     const { query, variables, tags, revalidate } = options;
 
@@ -47,9 +47,7 @@ export function createFetch({
       } as RequestInit,
     );
 
-    const data = await res.json();
-
-    return data;
+    return await res.json();
   }
 
   return { fetchGraphQL };
