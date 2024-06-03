@@ -1,9 +1,9 @@
 import { NextRequest } from "next/server";
 import { type VercelJwt } from "../types";
 
-export const getVercelJwtCookie = (request: NextRequest): string => {
+export const getVercelJwtCookie = (request: NextRequest): string | undefined => {
   const vercelJwtCookie = request.cookies.get('_vercel_jwt');
-  if (!vercelJwtCookie) throw new Error('`_vercel_jwt` cookie not set');
+  if (!vercelJwtCookie) return;
   return vercelJwtCookie.value;
 }
 

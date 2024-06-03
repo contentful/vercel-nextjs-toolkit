@@ -1,6 +1,6 @@
 import { NextApiHandler, NextApiRequest, NextApiResponse } from 'next';
 import { buildRedirectUrl, parseNextApiRequest } from '../../utils/url';
-import { parseVercelJwtCookie} from '../../utils/vercelJwt';
+import { parseVercelJwtCookie } from '../../utils/vercelJwt';
 import { type VercelJwt } from '../../types';
 
 export const enableDraftHandler: NextApiHandler = async (
@@ -22,6 +22,7 @@ export const enableDraftHandler: NextApiHandler = async (
     return
   }
 
+  const vercelJwtCookie = request.cookies['_vercel_jwt']
   let bypassToken: string;
   let aud: string;
 
@@ -33,13 +34,17 @@ export const enableDraftHandler: NextApiHandler = async (
     // which bundlees the bypass token value in its payload
     let vercelJwt: VercelJwt;
     try {
-      const vercelJwtCookie = request.cookies['_vercel_jwt']
-      if (!vercelJwtCookie) throw new Error('`_vercel_jwt` cookie not set');
+      if (!vercelJwtCookie) {
+        response.status(401).send(
+          'Missing _vercel_jwt cookie required for authorization bypass'
+        )
+        return
+      }
       vercelJwt = parseVercelJwtCookie(vercelJwtCookie);
     } catch (e) {
       if (!(e instanceof Error)) throw e;
       response.status(401).send(
-        'Missing or malformed bypass authorization token in _vercel_jwt cookie'
+        'Malformed bypass authorization token in _vercel_jwt cookie'
       )
       return
     }
@@ -70,7 +75,11 @@ export const enableDraftHandler: NextApiHandler = async (
 
   response.setDraftMode({ enable: true })
 
-  const redirectUrl = buildRedirectUrl({ path, base, bypassTokenFromQuery });
+  // if a _vercel_jwt cookie was found, we do _not_ want to pass through the bypassToken to the redirect query. this
+  // is because Vercel will not "process" (and remove) the query parameter when a _vercel_jwt cookie is present.
+  const bypassTokenForRedirect = vercelJwtCookie ? undefined : bypassTokenFromQuery
+
+  const redirectUrl = buildRedirectUrl({ path, base, bypassTokenFromQuery: bypassTokenForRedirect });
   response.redirect(redirectUrl)
   return
 }
