@@ -2,7 +2,7 @@ import { beforeEach, describe, expect, it } from 'vitest';
 import { getVercelJwtCookie, parseVercelJwtCookie } from './vercelJwt';
 import { NextRequest } from 'next/server';
 
-describe.only('getVercelJwtCookie', () => {
+describe('getVercelJwtCookie', () => {
   const url = 'http://example.com'
   let request: NextRequest
 
