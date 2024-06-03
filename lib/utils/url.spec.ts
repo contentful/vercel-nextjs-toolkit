@@ -2,7 +2,7 @@ import { describe, expect, it } from 'vitest';
 import { buildRedirectUrl, parseNextApiRequest, parseRequestUrl } from './url';
 import { makeNextApiRequest } from '../../test/helpers';
 
-const requestUrl = `https://my.vercel.app/api/enable-draft?path=%2Fblogs%2Fmy-cat&x-vercel-protection-bypass=foo`;
+const requestUrl = `https://my.vercel.app/api/enable-draft?path=%2Fblogs%2Fmy-cat&x-vercel-protection-bypass=foo&x-contentful-preview-secret=bar`;
 
 describe('parseNextApiRequest', () => {
   const request = makeNextApiRequest(requestUrl);
@@ -12,6 +12,7 @@ describe('parseNextApiRequest', () => {
     expect(result).toHaveProperty('origin', 'https://my.vercel.app')
     expect(result).toHaveProperty('host', 'my.vercel.app')
     expect(result).toHaveProperty('bypassToken', 'foo')
+    expect(result).toHaveProperty('contentfulPreviewSecret', 'bar')
     expect(result).toHaveProperty('path', '/blogs/my-cat')
   })
 })

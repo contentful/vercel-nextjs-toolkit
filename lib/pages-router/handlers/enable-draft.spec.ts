@@ -114,6 +114,25 @@ describe('handler', () => {
       expect(apiResponseSpy.send).toHaveBeenCalledWith(expect.any(String));
     });
 
+    describe('when a x-contentful-preview-secret is provided as a query param', () => {
+      beforeEach(() => {
+        vi.stubEnv('VERCEL_AUTOMATION_BYPASS_SECRET', '');
+        vi.stubEnv('CONTENTFUL_PREVIEW_SECRET', bypassToken);
+        const url = `https://vercel-app-router-integrations-ll9uxwb4f.vercel.app/api/enable-draft?path=%2Fblogs%2Fmy-cat&x-contentful-preview-secret=${bypassToken}`;
+        request = makeNextApiRequest(url);
+      });
+
+      it('redirects safely to the provided path and DOES NOT passes through the token and bypass cookie query params', async () => {
+        const result = await handler(request, response);
+        expect(result).to.be.undefined;
+        expect(apiResponseSpy.setDraftMode).toHaveBeenCalledWith({ enable: true });
+        expect(apiResponseSpy.redirect).toHaveBeenCalledWith(
+          `https://vercel-app-router-integrations-ll9uxwb4f.vercel.app/blogs/my-cat`,
+        );
+      });
+    });
+
+
     describe('when a x-vercel-protection-bypass token is provided as a query param', () => {
       beforeEach(() => {
         const url = `https://vercel-app-router-integrations-ll9uxwb4f.vercel.app/api/enable-draft?path=%2Fblogs%2Fmy-cat&x-vercel-protection-bypass=${bypassToken}`;

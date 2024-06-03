@@ -12,6 +12,7 @@ export const enableDraftHandler: NextApiHandler = async (
     path,
     host,
     bypassToken: bypassTokenFromQuery,
+    contentfulPreviewSecret: contentfulPreviewSecretFromQuery,
   } = parseNextApiRequest(request);
 
   // if we're in development, we don't need to check for a bypass token, and we can just enable draft mode
@@ -28,6 +29,9 @@ export const enableDraftHandler: NextApiHandler = async (
 
   if (bypassTokenFromQuery) {
     bypassToken = bypassTokenFromQuery;
+    aud = host;
+  } else if (contentfulPreviewSecretFromQuery) {
+    bypassToken = contentfulPreviewSecretFromQuery;
     aud = host;
   } else {
     // if x-vercel-protection-bypass not provided in query, we defer to parsing the _vercel_jwt cookie
@@ -52,7 +56,9 @@ export const enableDraftHandler: NextApiHandler = async (
     aud = vercelJwt.aud;
   }
 
-  if (bypassToken !== process.env.VERCEL_AUTOMATION_BYPASS_SECRET) {
+  // hobby Vercel accounts may not have a VERCEL_AUTOMATION_BYPASS_SECRET, so we fallback to checking the value against the CONTENTFUL_PREVIEW_SECRET
+  // env var, which is supported as a workaround for these accounts
+  if ((bypassToken !== process.env.VERCEL_AUTOMATION_BYPASS_SECRET) && (contentfulPreviewSecretFromQuery !== process.env.CONTENTFUL_PREVIEW_SECRET)) {
     response.status(403).send(
       'The bypass token you are authorized with does not match the bypass secret for this deployment. You might need to redeploy or go back and try the link again.'
     )
