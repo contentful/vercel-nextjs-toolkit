@@ -1,3 +1,10 @@
+# [1.4.0](https://github.com/contentful/vercel-nextjs-toolkit/compare/v1.3.2...v1.4.0) (2024-06-03)
+
+
+### Features
+
+* support x-contentful-preview-secret for hobby accounts ([dab58a8](https://github.com/contentful/vercel-nextjs-toolkit/commit/dab58a893d3bc8624c3c25e03445dc975348bfbd))
+
 ## [1.3.2](https://github.com/contentful/vercel-nextjs-toolkit/compare/v1.3.1...v1.3.2) (2024-06-03)
 
 
