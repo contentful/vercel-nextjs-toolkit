@@ -5,6 +5,7 @@ interface ParsedRequestUrl {
   host: string;
   path: string;
   bypassToken: string;
+  contentfulPreviewSecret: string;
 }
 
 export const parseNextApiRequest = (
@@ -16,8 +17,7 @@ export const parseNextApiRequest = (
   const protocol = request.headers['x-forwarded-proto'] || 'https'
   const requestUrl = request.url && new URL(request.url, `${protocol}://${hostHeader}`).toString()
 
-  const { origin, path, host, bypassToken } = parseRequestUrl(requestUrl)
-  return { origin, path, host, bypassToken };
+  return parseRequestUrl(requestUrl)
 }
 
 export const parseRequestUrl = (
@@ -28,12 +28,13 @@ export const parseRequestUrl = (
 
   const rawPath = searchParams.get('path') || '';
   const bypassToken = searchParams.get('x-vercel-protection-bypass') || '';
+  const contentfulPreviewSecret = searchParams.get('x-contentful-preview-secret') || '';
 
   // to allow query parameters to be passed through to the redirected URL, the original `path` should already be
   // URI encoded, and thus must be decoded here
   const path = decodeURIComponent(rawPath);
 
-  return { origin, path, host, bypassToken };
+  return { origin, path, host, bypassToken, contentfulPreviewSecret };
 };
 
 export const buildRedirectUrl = ({
