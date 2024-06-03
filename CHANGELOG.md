@@ -1,3 +1,10 @@
+## [1.3.2](https://github.com/contentful/vercel-nextjs-toolkit/compare/v1.3.1...v1.3.2) (2024-06-03)
+
+
+### Bug Fixes
+
+* hide bypass token on redirect when cookie is present ([99f9fa3](https://github.com/contentful/vercel-nextjs-toolkit/commit/99f9fa3f05132b0bd2fc3897e051c5523d682a59))
+
 ## [1.3.1](https://github.com/contentful/vercel-nextjs-toolkit/compare/v1.3.0...v1.3.1) (2024-05-06)
 
 
