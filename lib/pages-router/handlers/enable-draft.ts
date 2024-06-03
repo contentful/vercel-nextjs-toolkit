@@ -56,7 +56,7 @@ export const enableDraftHandler: NextApiHandler = async (
     aud = vercelJwt.aud;
   }
 
-  // hobby Vercel accounts may not have a VERCEL_AUTOMATION_BYPASS_SECRET, so we fallback to checking the value against the CONTENTFUL_PREVIEW_SECRET
+  // certain Vercel account tiers may not have a VERCEL_AUTOMATION_BYPASS_SECRET, so we fallback to checking the value against the CONTENTFUL_PREVIEW_SECRET
   // env var, which is supported as a workaround for these accounts
   if ((bypassToken !== process.env.VERCEL_AUTOMATION_BYPASS_SECRET) && (contentfulPreviewSecretFromQuery !== process.env.CONTENTFUL_PREVIEW_SECRET)) {
     response.status(403).send(
