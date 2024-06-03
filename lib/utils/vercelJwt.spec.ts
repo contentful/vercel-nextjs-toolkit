@@ -1,15 +1,31 @@
-import { describe, expect, it } from 'vitest';
+import { beforeEach, describe, expect, it } from 'vitest';
 import { getVercelJwtCookie, parseVercelJwtCookie } from './vercelJwt';
 import { NextRequest } from 'next/server';
 
 describe('getVercelJwtCookie', () => {
   const url = 'http://example.com'
-  const request = new NextRequest(url);
-  request.cookies.set('_vercel_jwt', 'vercel-jwt');
+  let request: NextRequest
+
+  beforeEach(() => {
+    request = new NextRequest(url);
+    request.cookies.set('_vercel_jwt', 'vercel-jwt');
+  })
 
   it('returns the _vercel_jwt cookie', () => {
     const result = getVercelJwtCookie(request)
     expect(result).toEqual('vercel-jwt')
+  })
+
+  describe('when cookie is not present', () => {
+    beforeEach(() => {
+      request = new NextRequest(url);
+      request.cookies.clear()
+    })
+
+    it('returns undefined', () => {
+      const result = getVercelJwtCookie(request)
+      expect(result).to.equal(undefined)
+    })
   })
 })
 

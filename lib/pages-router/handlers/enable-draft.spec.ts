@@ -85,6 +85,23 @@ describe('handler', () => {
     });
   });
 
+  describe('when a x-vercel-protection-bypass token is also provided as a query param', () => {
+    beforeEach(() => {
+      const url = `https://vercel-app-router-integrations-ll9uxwb4f.vercel.app/api/enable-draft?path=%2Fblogs%2Fmy-cat&x-vercel-protection-bypass=${bypassToken}`;
+      request = makeNextApiRequest(url);
+      request.cookies['_vercel_jwt'] = vercelJwt;
+    });
+
+    it('redirects safely to the provided path and DOES NOT pass through the token and bypass cookie query params', async () => {
+      const result = await handler(request, response);
+      expect(result).to.be.undefined;
+      expect(apiResponseSpy.setDraftMode).toHaveBeenCalledWith({ enable: true });
+      expect(apiResponseSpy.redirect).toHaveBeenCalledWith(
+        `https://vercel-app-router-integrations-ll9uxwb4f.vercel.app/blogs/my-cat`,
+      );
+    });
+  });
+
   describe('when the _vercel_jwt cookie is missing', () => {
     beforeEach(() => {
       const url = `https://vercel-app-router-integrations-ll9uxwb4f.vercel.app/api/enable-draft?path=%2Fblogs%2Fmy-cat`;

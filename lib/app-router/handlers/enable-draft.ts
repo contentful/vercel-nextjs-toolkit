@@ -22,23 +22,30 @@ export async function enableDraftHandler(
     return redirect(redirectUrl);
   }
 
+  const vercelJwtCookie = getVercelJwtCookie(request)
+
   let bypassToken: string;
   let aud: string;
+  let vercelJwt: VercelJwt | null = null
 
   if (bypassTokenFromQuery) {
     bypassToken = bypassTokenFromQuery;
     aud = host;
   } else {
-    // if x-vercel-protection-bypass not provided in query, we defer to parsing the _vercel_jwt cookie
-    // which bundlees the bypass token value in its payload
-    let vercelJwt: VercelJwt
+    // if we don't have a bypass token from the query we fall back to the _vercel_jwt cookie to find
+    // the correct authorization bypass elements
+    if (!vercelJwtCookie) {
+      return new Response(
+        'Missing _vercel_jwt cookie required for authorization bypass',
+        { status: 401 },
+      );
+    }
     try {
-      const vercelJwtCookie = getVercelJwtCookie(request)
       vercelJwt = parseVercelJwtCookie(vercelJwtCookie);
     } catch (e) {
       if (!(e instanceof Error)) throw e;
       return new Response(
-        'Missing or malformed bypass authorization token in _vercel_jwt cookie',
+        'Malformed bypass authorization token in _vercel_jwt cookie',
         { status: 401 },
       );
     }
@@ -68,6 +75,10 @@ export async function enableDraftHandler(
 
   draftMode().enable();
 
-  const redirectUrl = buildRedirectUrl({ path, base, bypassTokenFromQuery });
+  // if a _vercel_jwt cookie was found, we do _not_ want to pass through the bypassToken to the redirect query. this
+  // is because Vercel will not "process" (and remove) the query parameter when a _vercel_jwt cookie is present.
+  const bypassTokenForRedirect = vercelJwtCookie ? undefined : bypassTokenFromQuery
+
+  const redirectUrl = buildRedirectUrl({ path, base, bypassTokenFromQuery: bypassTokenForRedirect });
   redirect(redirectUrl);
 }
