@@ -15,7 +15,6 @@
   </a>
 </p>
 
-
 A toolkit of Next.js helpers that make it easier to use Contentful in a Next.js project hosted on Vercel.
 
 This toolkit is intended as a companion to Contentful's Vercel App, a Contentful Marketplace integration that helps your content team get up and running quickly with your Vercel project powered by Contentful.
@@ -26,7 +25,6 @@ This toolkit is intended as a companion to Contentful's Vercel App, a Contentful
 - Next.js v13 or later
 
 ## Getting Started
-
 
 Install the toolkit using npm:
 
@@ -47,27 +45,23 @@ Contentful's Vercel App makes use of these handlers to provide preview URLs that
 #### App Router usage
 
 If your NextJs project is using [App Router](https://nextjs.org/docs/app),
-create a  `route.ts` or `route.js`  [route handler](https://nextjs.org/docs/app/building-your-application/routing/route-handlers) file in a dedicated folder (e.g. `api/enable-draft`) inside your `app` directory:
-
+create a `route.ts` or `route.js` [route handler](https://nextjs.org/docs/app/building-your-application/routing/route-handlers) file in a dedicated folder (e.g. `api/enable-draft`) inside your `app` directory:
 
 ```ts
 // app/api/enable-draft/route.ts|js
 
-export { enableDraftHandler as GET } from "@contentful/vercel-nextjs-toolkit/app-router"
+export { enableDraftHandler as GET } from '@contentful/vercel-nextjs-toolkit/app-router';
 ```
-
 
 #### Pages Router usage
 
-If your NextJs project is using [Pages Router](https://nextjs.org/docs/pages), create an  `enable-draft.ts` or `enable-draft.js`  [API route](https://nextjs.org/docs/pages/building-your-application/routing/api-routes) file inside the `pages/api` directory:
-
+If your NextJs project is using [Pages Router](https://nextjs.org/docs/pages), create an `enable-draft.ts` or `enable-draft.js` [API route](https://nextjs.org/docs/pages/building-your-application/routing/api-routes) file inside the `pages/api` directory:
 
 ```ts
 // pages/api/enable-draft.ts|js
 
-export { enableDraftHandler as default } from "@contentful/vercel-nextjs-toolkit/pages-router";
+export { enableDraftHandler as default } from '@contentful/vercel-nextjs-toolkit/pages-router';
 ```
-
 
 #### Preview URL output
 
@@ -94,7 +88,7 @@ The values provided in the `x-vercel-*` query parameters trigger Vercel to set a
 
 ## Additional helpful resources
 
-* To be completed
+- To be completed
 
 ## Reach out to us
 
