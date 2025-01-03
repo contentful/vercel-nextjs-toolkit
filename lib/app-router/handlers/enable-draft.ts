@@ -21,7 +21,7 @@ export async function enableDraftHandler(
 
   // if we're in development, we don't need to check for a bypass token, and we can just enable draft mode
   if (process.env.NODE_ENV === 'development') {
-    draftMode().enable();
+    (await draftMode()).enable();
 
     // Override cookie header for draft mode for usage in live-preview
     // https://github.com/vercel/next.js/issues/49927
@@ -99,7 +99,7 @@ export async function enableDraftHandler(
     });
   }
 
-  draftMode().enable();
+  (await draftMode()).enable();
 
   // if a _vercel_jwt cookie was found, we do _not_ want to pass through the bypassToken to the redirect query. this
   // is because Vercel will not "process" (and remove) the query parameter when a _vercel_jwt cookie is present.

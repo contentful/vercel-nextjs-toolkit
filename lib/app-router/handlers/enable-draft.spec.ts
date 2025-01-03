@@ -30,11 +30,11 @@ describe('handler', () => {
 
   beforeEach(() => {
     vi.stubEnv('VERCEL_AUTOMATION_BYPASS_SECRET', bypassToken);
-    draftModeMock = {
+    draftModeMock = Promise.resolve({
       enable: vi.fn(),
       disable: vi.fn(),
       isEnabled: true
-    }
+    })
     vi.mocked(draftMode).mockReturnValue(draftModeMock)
   });
 
@@ -45,7 +45,7 @@ describe('handler', () => {
   it('redirects safely to the provided path, without passing through the token and bypass cookie query params', async () => {
     const result = await GET(request);
     expect(result).to.be.undefined;
-    expect(draftModeMock.enable).toHaveBeenCalled();
+    expect((await draftModeMock).enable).toHaveBeenCalled();
     expect(vi.mocked(redirect)).toHaveBeenCalledWith(
       'https://vercel-app-router-integrations-ll9uxwb4f.vercel.app/blogs/my-cat',
     );
@@ -87,7 +87,7 @@ describe('handler', () => {
     it('redirects safely to the provided path and DOES NOT pass through the token and bypass cookie query params', async () => {
       const result = await GET(request);
       expect(result).to.be.undefined;
-      expect(draftModeMock.enable).toHaveBeenCalled();
+      expect((await draftModeMock).enable).toHaveBeenCalled();
       expect(vi.mocked(redirect)).toHaveBeenCalledWith(
         `https://vercel-app-router-integrations-ll9uxwb4f.vercel.app/blogs/my-cat`,
       );
@@ -116,7 +116,7 @@ describe('handler', () => {
       it('redirects safely to the provided path and DOES NOT pass through the token and bypass cookie query params', async () => {
         const result = await GET(request);
         expect(result).to.be.undefined;
-        expect(draftModeMock.enable).toHaveBeenCalled();
+        expect((await draftModeMock).enable).toHaveBeenCalled();
         expect(vi.mocked(redirect)).toHaveBeenCalledWith(
           `https://vercel-app-router-integrations-ll9uxwb4f.vercel.app/blogs/my-cat`,
         );
@@ -132,7 +132,7 @@ describe('handler', () => {
       it('redirects safely to the provided path AND passes through the token and bypass cookie query params', async () => {
         const result = await GET(request);
         expect(result).to.be.undefined;
-        expect(draftModeMock.enable).toHaveBeenCalled();
+        expect((await draftModeMock).enable).toHaveBeenCalled();
         expect(vi.mocked(redirect)).toHaveBeenCalledWith(
           `https://vercel-app-router-integrations-ll9uxwb4f.vercel.app/blogs/my-cat?x-vercel-protection-bypass=${bypassToken}&x-vercel-set-bypass-cookie=samesitenone`,
         );
