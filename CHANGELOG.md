@@ -1,3 +1,10 @@
+## [1.4.1](https://github.com/contentful/vercel-nextjs-toolkit/compare/v1.4.0...v1.4.1) (2025-01-07)
+
+
+### Bug Fixes
+
+* setting prerender bypass token on local development [] ([7c97734](https://github.com/contentful/vercel-nextjs-toolkit/commit/7c97734a4678c2f3a7a52be90adebe7890f06c9a))
+
 # [1.4.0](https://github.com/contentful/vercel-nextjs-toolkit/compare/v1.3.2...v1.4.0) (2024-06-03)
 
 
