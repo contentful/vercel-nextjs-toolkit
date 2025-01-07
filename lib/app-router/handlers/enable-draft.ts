@@ -1,8 +1,11 @@
-import { draftMode } from 'next/headers';
+import { draftMode, cookies } from 'next/headers';
 import { redirect } from 'next/navigation';
 import { NextRequest } from 'next/server';
 import { buildRedirectUrl, parseRequestUrl } from '../../utils/url';
-import { getVercelJwtCookie, parseVercelJwtCookie } from '../../utils/vercelJwt';
+import {
+  getVercelJwtCookie,
+  parseVercelJwtCookie,
+} from '../../utils/vercelJwt';
 import { type VercelJwt } from '../../types';
 
 export async function enableDraftHandler(
@@ -19,15 +22,29 @@ export async function enableDraftHandler(
   // if we're in development, we don't need to check for a bypass token, and we can just enable draft mode
   if (process.env.NODE_ENV === 'development') {
     draftMode().enable();
+
+    // Override cookie header for draft mode for usage in live-preview
+    // https://github.com/vercel/next.js/issues/49927
+    const cookieStore = await cookies();
+    const cookie = cookieStore.get('__prerender_bypass')!;
+    cookieStore.set({
+      name: '__prerender_bypass',
+      value: cookie?.value,
+      httpOnly: true,
+      path: '/',
+      secure: true,
+      sameSite: 'none',
+    });
+
     const redirectUrl = buildRedirectUrl({ path, base, bypassTokenFromQuery });
     return redirect(redirectUrl);
   }
 
-  const vercelJwtCookie = getVercelJwtCookie(request)
+  const vercelJwtCookie = getVercelJwtCookie(request);
 
   let bypassToken: string;
   let aud: string;
-  let vercelJwt: VercelJwt | null = null
+  let vercelJwt: VercelJwt | null = null;
 
   if (bypassTokenFromQuery) {
     bypassToken = bypassTokenFromQuery;
@@ -59,7 +76,10 @@ export async function enableDraftHandler(
 
   // certain Vercel account tiers may not have a VERCEL_AUTOMATION_BYPASS_SECRET, so we fallback to checking the value against the CONTENTFUL_PREVIEW_SECRET
   // env var, which is supported as a workaround for these accounts
-  if ((bypassToken !== process.env.VERCEL_AUTOMATION_BYPASS_SECRET) && (contentfulPreviewSecretFromQuery !== process.env.CONTENTFUL_PREVIEW_SECRET)) {
+  if (
+    bypassToken !== process.env.VERCEL_AUTOMATION_BYPASS_SECRET &&
+    contentfulPreviewSecretFromQuery !== process.env.CONTENTFUL_PREVIEW_SECRET
+  ) {
     return new Response(
       'The bypass token you are authorized with does not match the bypass secret for this deployment. You might need to redeploy or go back and try the link again.',
       { status: 403 },
@@ -83,8 +103,14 @@ export async function enableDraftHandler(
 
   // if a _vercel_jwt cookie was found, we do _not_ want to pass through the bypassToken to the redirect query. this
   // is because Vercel will not "process" (and remove) the query parameter when a _vercel_jwt cookie is present.
-  const bypassTokenForRedirect = vercelJwtCookie ? undefined : bypassTokenFromQuery
+  const bypassTokenForRedirect = vercelJwtCookie
+    ? undefined
+    : bypassTokenFromQuery;
 
-  const redirectUrl = buildRedirectUrl({ path, base, bypassTokenFromQuery: bypassTokenForRedirect });
+  const redirectUrl = buildRedirectUrl({
+    path,
+    base,
+    bypassTokenFromQuery: bypassTokenForRedirect,
+  });
   redirect(redirectUrl);
 }
