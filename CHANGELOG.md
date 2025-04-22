@@ -1,3 +1,10 @@
+# [1.6.0](https://github.com/contentful/vercel-nextjs-toolkit/compare/v1.5.0...v1.6.0) (2025-04-22)
+
+
+### Features
+
+* trigger release for Next.js 15 upgrade ([#85](https://github.com/contentful/vercel-nextjs-toolkit/issues/85)) ([0942b4b](https://github.com/contentful/vercel-nextjs-toolkit/commit/0942b4bcd11513df38ba1411bb706f43c73d6377))
+
 # [1.5.0](https://github.com/contentful/vercel-nextjs-toolkit/compare/v1.4.1...v1.5.0) (2025-02-25)
 
 
