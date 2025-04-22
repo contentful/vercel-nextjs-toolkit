@@ -1,3 +1,18 @@
+# [1.5.0](https://github.com/contentful/vercel-nextjs-toolkit/compare/v1.4.1...v1.5.0) (2025-02-25)
+
+
+### Features
+
+* setup basic dependabot config ([4124268](https://github.com/contentful/vercel-nextjs-toolkit/commit/4124268f913a3dc64612ad12330bbb8eb7f03c45))
+* Update dependabot.yml ([4a0e29d](https://github.com/contentful/vercel-nextjs-toolkit/commit/4a0e29dd834782128fc499818d40e2c9b2e60308))
+
+## [1.4.1](https://github.com/contentful/vercel-nextjs-toolkit/compare/v1.4.0...v1.4.1) (2025-01-07)
+
+
+### Bug Fixes
+
+* setting prerender bypass token on local development [] ([7c97734](https://github.com/contentful/vercel-nextjs-toolkit/commit/7c97734a4678c2f3a7a52be90adebe7890f06c9a))
+
 # [1.4.0](https://github.com/contentful/vercel-nextjs-toolkit/compare/v1.3.2...v1.4.0) (2024-06-03)
 
 
