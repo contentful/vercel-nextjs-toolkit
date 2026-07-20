@@ -1,3 +1,11 @@
+## [1.6.1](https://github.com/contentful/vercel-nextjs-toolkit/compare/v1.6.0...v1.6.1) (2026-07-20)
+
+
+### Bug Fixes
+
+* migrate CODEOWNERS org handles to group-applied-ai-solutions [AIS-66] ([c207da6](https://github.com/contentful/vercel-nextjs-toolkit/commit/c207da67bbab62d86a268e27ffe4bbaae38a8548))
+* update CODEOWNERS to use group-applied-ai-solutions [AIS-66] ([#116](https://github.com/contentful/vercel-nextjs-toolkit/issues/116)) ([3959d00](https://github.com/contentful/vercel-nextjs-toolkit/commit/3959d00bd20df15abc317dcb6e21505b36eaaa59))
+
 # [1.6.0](https://github.com/contentful/vercel-nextjs-toolkit/compare/v1.5.0...v1.6.0) (2025-04-22)
 
 
