@@ -41,7 +41,7 @@ jobs:
             github/token/vercel-nextjs-toolkit-semantic-release token | GITHUB_TOKEN ;
 
       - name: Setup Node.js
-        uses: actions/setup-node@v3
+        uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7
         with:
           node-version: 20
           registry-url: 'https://npm.pkg.github.com'
