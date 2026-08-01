@@ -29,7 +29,7 @@ jobs:
 
       - name: 'Retrieve NPM Token'
         id: vault
-        uses: hashicorp/vault-action@v2.4.3
+        uses: hashicorp/vault-action@9c2d817b85b9fff56bcab21cb74b485aee9e9d73 # v2.8.1
         with:
           url: ${{ secrets.VAULT_URL }}
           role: ${{ github.event.repository.name }}-github-action
