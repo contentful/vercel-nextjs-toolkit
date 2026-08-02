@@ -38,10 +38,10 @@
   },
   "homepage": "https://github.com/contentful/vercel-nextjs-toolkit#readme",
   "devDependencies": {
-    "@semantic-release/changelog": "^6.0.3",
-    "@semantic-release/git": "^10.0.1",
+    "@semantic-release/changelog": "^7.0.0",
+    "@semantic-release/git": "^11.0.0",
     "@types/node": "^20.12.7",
-    "semantic-release": "^23.0.8",
+    "semantic-release": "^25.0.0",
     "typescript": "^5.2.2",
     "vite": "^5.2.0",
     "vite-plugin-dts": "^5.0.0",
