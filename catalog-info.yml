@@ -8,4 +8,4 @@ metadata:
 spec:
   type: library
   lifecycle: production
-  owner: group:team-marketplace
+  owner: group:group-applied-ai-solutions

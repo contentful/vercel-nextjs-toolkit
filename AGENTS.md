@@ -6,7 +6,7 @@ A small Next.js helper library for Contentful customers hosting on Vercel. Provi
 Companion to the Contentful Vercel Marketplace App.
 
 ## Ownership
-`@contentful/team-marketplace` (full, sole owner)
+`@contentful/group-applied-ai-solutions` (full, sole owner)
 
 ## Structure
 
