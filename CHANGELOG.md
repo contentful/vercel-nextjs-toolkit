@@ -1,3 +1,10 @@
+## [1.6.2](https://github.com/contentful/vercel-nextjs-toolkit/compare/v1.6.1...v1.6.2) (2026-10-14)
+
+
+### Bug Fixes
+
+* app router handler no longer crashes under Turbopack on Next 16 ([#141](https://github.com/contentful/vercel-nextjs-toolkit/issues/141)) ([e771f92](https://github.com/contentful/vercel-nextjs-toolkit/commit/e771f926b05d5ce84b4e59a310aabd6839572c5d))
+
 ## [1.6.1](https://github.com/contentful/vercel-nextjs-toolkit/compare/v1.6.0...v1.6.1) (2026-07-20)
 
 
