@@ -27,7 +27,20 @@ jobs:
           fetch-depth: 0
           persist-credentials: false
 
-      - name: 'Retrieve NPM Token'
+      - name: Setup Node.js
+        uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7
+        with:
+          node-version: 24
+          registry-url: 'https://npm.pkg.github.com'
+          scope: '@contentful'
+          always-auth: true
+
+      - run: npm ci
+      - run: npm run build
+      - run: npm test
+
+      - name: Retrieve NPM Token
+        if: github.event_name == 'push'
         id: vault
         uses: hashicorp/vault-action@892a26828f195e65540a40b4768ae4571f51ebfc # v4.0.0
         with:
@@ -40,27 +53,17 @@ jobs:
             secret/data/github/github_packages_write GITHUB_PACKAGES_WRITE_TOKEN | GITHUB_PACKAGES_WRITE_TOKEN ;
             github/token/vercel-nextjs-toolkit-semantic-release token | GITHUB_TOKEN ;
 
-      - name: Setup Node.js
-        uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7
-        with:
-          node-version: 24
-          registry-url: 'https://npm.pkg.github.com'
-          scope: '@contentful'
-          always-auth: true
-
-      - name: 'Create GH .npmrc'
+      - name: Create GH .npmrc
+        if: github.event_name == 'push'
         shell: bash
         run: |
           echo -e "//npm.pkg.github.com/:_authToken=${GITHUB_TOKEN}\n@contentful:registry=https://npm.pkg.github.com\nalways-auth=true" > .npmrc
         env:
           GITHUB_TOKEN: ${{ steps.vault.outputs.GITHUB_PACKAGES_WRITE_TOKEN }}
 
-      - run: npm ci
-      - run: npm run build
-      - run: npm test
-
-      - run: |
-          npx semantic-release
+      - name: semantic-release
+        if: github.event_name == 'push'
+        run: npx semantic-release
         env:
           GITHUB_TOKEN: ${{ steps.vault.outputs.GITHUB_TOKEN }}
           NPM_TOKEN: ${{ steps.vault.outputs.GITHUB_PACKAGES_WRITE_TOKEN }}
