@@ -37,6 +37,16 @@ jobs:
 
       - run: npm ci
       - run: npm run build
+
+      # Turbopack aliases `next/*` by the extensionless specifier, so `next/navigation.js`
+      # breaks the App Router handler (#141). Fail if the build starts emitting the suffix again.
+      - name: Check next/* imports are extensionless
+        run: |
+          if grep -rnE --include='*.js' --include='*.cjs' "[\"']next/[^\"']+\.js[\"']" dist; then
+            echo "::error::dist imports next/* with a .js suffix. Keep next subpaths in rollupOptions.external."
+            exit 1
+          fi
+
       - run: npm test
 
       - name: Retrieve NPM Token
